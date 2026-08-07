@@ -950,7 +950,7 @@
     let selectedAvatarUrl = null;
     let failedAttempts = 0;
 
-    // Strict Pure Anime Avatars
+    // Strict Pure Anime Avatars Only
     const animeAvatars = [
       { name: "Naruto Uzumaki", url: "https://unavatar.io/github/naruto" },
       { name: "Sasuke Uchiha", url: "https://unavatar.io/github/sasuke" },
@@ -1022,7 +1022,11 @@
       requestsSent = uData.requestsSent || [];
       requestsReceived = uData.requestsReceived || [];
       messages = uData.messages || {};
-      selectedAvatarUrl = uData.selectedAvatarUrl || animeAvatars[0].url;
+      
+      // Ensure user avatar is strictly an anime avatar
+      selectedAvatarUrl = (uData.selectedAvatarUrl && uData.selectedAvatarUrl.includes('unavatar.io')) 
+        ? uData.selectedAvatarUrl 
+        : animeAvatars[0].url;
     }
 
     function requestNotificationPermission() {
@@ -1133,9 +1137,9 @@
           return;
         }
 
-        // Assign a pure anime avatar by default
-        const randomAvatarIndex = Math.floor(Math.random() * animeAvatars.url ? animeAvatars.length : 1);
-        const assignedAvatar = animeAvatars[randomAvatarIndex] ? animeAvatars[randomAvatarIndex].url : animeAvatars[0].url;
+        // Assign pure anime avatar by default
+        const randomAvatarIndex = Math.floor(Math.random() * animeAvatars.length);
+        const assignedAvatar = animeAvatars[randomAvatarIndex].url;
 
         usersDatabase[userKey] = { 
           password: pass, 
@@ -1444,7 +1448,10 @@
 
     function renderAvatar() {
       const fallbackUrl = animeAvatars[0].url;
-      const finalAvatar = selectedAvatarUrl || fallbackUrl;
+      const finalAvatar = (selectedAvatarUrl && selectedAvatarUrl.includes('unavatar.io')) 
+        ? selectedAvatarUrl 
+        : fallbackUrl;
+
       const imgTag = `<img src="${finalAvatar}" alt="Anime Profile Picture" />`;
       document.getElementById('headerAvatarBtn').innerHTML = imgTag;
       document.getElementById('drawerAvatarPreview').innerHTML = imgTag;
@@ -1483,7 +1490,10 @@
       if (requestsReceived.length > 0) {
         reqContainer.innerHTML = `<div class="requests-section-title">📩 Incoming Follow Requests (${requestsReceived.length})</div>`;
         requestsReceived.forEach(reqSender => {
-          const senderAvatar = usersDatabase[reqSender]?.selectedAvatarUrl || animeAvatars[0].url;
+          const senderAvatar = (usersDatabase[reqSender]?.selectedAvatarUrl && usersDatabase[reqSender].selectedAvatarUrl.includes('unavatar.io'))
+            ? usersDatabase[reqSender].selectedAvatarUrl
+            : animeAvatars[0].url;
+
           const card = document.createElement('div');
           card.className = 'friend-card';
           card.innerHTML = `
@@ -1509,13 +1519,15 @@
       for (let userKey in usersDatabase) {
         if (userKey === currentUser) continue;
 
-        // Display all accounts, filtered by search query if provided
         if (!query || userKey.includes(query)) {
           totalDisplayCount++;
           const userData = usersDatabase[userKey];
-          const targetAvatar = userData?.selectedAvatarUrl || animeAvatars[0].url;
-          const isFriend = myFriends.includes(userKey);
+          
+          const targetAvatar = (userData?.selectedAvatarUrl && userData.selectedAvatarUrl.includes('unavatar.io'))
+            ? userData.selectedAvatarUrl
+            : animeAvatars[0].url;
 
+          const isFriend = myFriends.includes(userKey);
           const isLoggedInNow = loggedInAccounts.includes(userKey);
           const isNewMember = userData.joinedTimestamp && (Date.now() - userData.joinedTimestamp < 7 * 24 * 60 * 60 * 1000);
 
@@ -1551,7 +1563,11 @@
       const targetData = usersDatabase[targetUser];
       if (!targetData) return;
 
-      document.getElementById('pvAvatar').src = targetData.selectedAvatarUrl || animeAvatars[0].url;
+      const targetAvatar = (targetData.selectedAvatarUrl && targetData.selectedAvatarUrl.includes('unavatar.io'))
+        ? targetData.selectedAvatarUrl
+        : animeAvatars[0].url;
+
+      document.getElementById('pvAvatar').src = targetAvatar;
       
       const isLoggedInNow = loggedInAccounts.includes(targetUser);
       document.getElementById('pvUsername').innerHTML = `@${targetUser} ${isLoggedInNow ? '<span class="online-badge">🟢 Logged In Now</span>' : ''}`;
