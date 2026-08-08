@@ -601,13 +601,16 @@
     }
 
     .chat-header { display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 10px; font-weight: 700; color: #38bdf8; font-size: 13px; }
-    .chat-messages { height: 140px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .chat-messages { height: 170px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
     .chat-msg { padding: 6px 10px; border-radius: 8px; font-size: 12px; max-width: 80%; width: fit-content; }
     .chat-msg.me { background: #0ea5e9; color: #fff; align-self: flex-end; }
     .chat-msg.them { background: #1e293b; color: #e0e6ed; align-self: flex-start; }
-    .chat-input-box { display: flex; gap: 6px; }
-    .chat-input-box input { flex: 1; padding: 8px; background: #141720; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 12px; outline: none; }
+    .chat-msg img { max-width: 180px; border-radius: 8px; margin-top: 4px; display: block; }
+    
+    .chat-input-box { display: flex; gap: 6px; align-items: center; }
+    .chat-input-box input[type="text"] { flex: 1; padding: 8px; background: #141720; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 12px; outline: none; }
     .chat-input-box button { padding: 8px 12px; background: #10b981; border: none; color: #fff; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-photo-attach { background: #38bdf8 !important; }
 
     .modal-overlay {
       position: fixed;
@@ -919,8 +922,10 @@
             </div>
             <div class="chat-messages" id="chatMessagesBox"></div>
             <div class="chat-input-box">
-              <input type="text" id="chatInputText" placeholder="Write a message..." onkeydown="if(event.key==='Enter') sendChatMessage()" />
-              <button onclick="sendChatMessage()">Send</button>
+              <input type="text" id="chatInputText" placeholder="Write a message..." onkeydown="if(event.key==='Enter') sendChatMessage('text')" />
+              <input type="file" id="chatPhotoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
+              <button class="btn-photo-attach" title="Send Anime Photo" onclick="document.getElementById('chatPhotoFileInput').click()">📷</button>
+              <button onclick="sendChatMessage('text')">Send</button>
             </div>
           </div>
         </div>
@@ -1023,7 +1028,6 @@
       requestsReceived = uData.requestsReceived || [];
       messages = uData.messages || {};
       
-      // Ensure user avatar is strictly an anime avatar
       selectedAvatarUrl = (uData.selectedAvatarUrl && uData.selectedAvatarUrl.includes('unavatar.io')) 
         ? uData.selectedAvatarUrl 
         : animeAvatars[0].url;
@@ -1137,7 +1141,6 @@
           return;
         }
 
-        // Assign pure anime avatar by default
         const randomAvatarIndex = Math.floor(Math.random() * animeAvatars.length);
         const assignedAvatar = animeAvatars[randomAvatarIndex].url;
 
@@ -1674,23 +1677,39 @@
       chatHistory.forEach(msg => {
         const div = document.createElement('div');
         div.className = `chat-msg ${msg.sender === currentUser ? 'me' : 'them'}`;
-        div.innerText = msg.text;
+        
+        if (msg.type === 'image') {
+          div.innerHTML = `<div>${msg.text ? msg.text : ''}</div><img src="${msg.imgUrl}" alt="Sent photo" />`;
+        } else {
+          div.innerText = msg.text;
+        }
+        
         box.appendChild(div);
       });
 
       box.scrollTop = box.scrollHeight;
     }
 
-    function sendChatMessage() {
+    function sendChatMessage(type = 'text', content = '') {
+      if (!activeChatFriend) return;
       const input = document.getElementById('chatInputText');
-      const text = input.value.trim();
-      if (!text || !activeChatFriend) return;
+      const text = type === 'text' ? input.value.trim() : '';
+
+      if (type === 'text' && !text) return;
 
       const chatKey = [currentUser, activeChatFriend].sort().join('_');
       if (!messages[chatKey]) messages[chatKey] = [];
 
-      messages[chatKey].push({ sender: currentUser, text: text, time: new Date().toISOString() });
-      input.value = '';
+      const newMsg = {
+        sender: currentUser,
+        text: text,
+        type: type,
+        imgUrl: type === 'image' ? content : null,
+        time: new Date().toISOString()
+      };
+
+      messages[chatKey].push(newMsg);
+      if (type === 'text') input.value = '';
 
       const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
       if (usersDatabase[activeChatFriend]) {
@@ -1701,6 +1720,18 @@
       saveData();
       localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
       renderChatMessages();
+    }
+
+    function handlePhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        sendChatMessage('image', e.target.result);
+      };
+      reader.readAsDataURL(file);
+      event.target.value = '';
     }
 
     function updateDrawerStats() {
