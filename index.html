@@ -2,2707 +2,1486 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DailyFlow</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PulseTrack</title>
 <style>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f4f6fb;
-    color: #171923;
-}
-
-button,
-input {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
-    border: none;
-}
-
-.hidden {
-    display: none !important;
-}
-
-/* =========================
-   AUTH
-========================= */
-
-.auth-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.auth-card {
-    width: 100%;
-    max-width: 430px;
-    background: white;
-    padding: 30px;
-    border-radius: 24px;
-    box-shadow: 0 20px 60px rgba(0,0,0,.2);
-}
-
-.logo {
-    text-align: center;
-    font-size: 30px;
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.logo span {
-    color: #667eea;
-}
-
-.subtitle {
-    text-align: center;
-    color: #777;
-    margin-bottom: 25px;
-}
-
-.auth-card h2 {
-    margin-bottom: 18px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 7px;
-    font-weight: 600;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 13px;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    outline: none;
-}
-
-.form-group input:focus {
-    border-color: #667eea;
-}
-
-.primary-btn {
-    width: 100%;
-    padding: 14px;
-    border-radius: 12px;
-    background: #667eea;
-    color: white;
-    font-weight: 700;
-    margin-top: 5px;
-}
-
-.primary-btn:hover {
-    background: #5568d9;
-}
-
-.secondary-btn {
-    width: 100%;
-    padding: 13px;
-    border-radius: 12px;
-    background: #eee;
-    color: #222;
-    margin-top: 10px;
-}
-
-.text-btn {
-    background: none;
-    color: #667eea;
-    margin-top: 15px;
-    font-weight: 600;
-}
-
-.password-wrap {
-    position: relative;
-}
-
-.password-wrap input {
-    padding-right: 55px;
-}
-
-.show-password {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    color: #667eea;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.error {
-    color: #e53e3e;
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-.success {
-    color: #16a34a;
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-/* =========================
-   APP
-========================= */
-
-.app {
-    min-height: 100vh;
-}
-
-.topbar {
-    height: 70px;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
-    border-bottom: 1px solid #e5e7eb;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-}
-
-.brand {
-    font-size: 24px;
-    font-weight: 800;
-}
-
-.brand span {
-    color: #667eea;
-}
-
-.top-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.profile-mini {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
-.avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    overflow: hidden;
-}
-
-.avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.layout {
-    display: flex;
-    min-height: calc(100vh - 70px);
-}
-
-.sidebar {
-    width: 240px;
-    background: white;
-    border-right: 1px solid #e5e7eb;
-    padding: 20px 12px;
-}
-
-.nav-btn {
-    width: 100%;
-    padding: 13px;
-    border-radius: 12px;
-    background: transparent;
-    text-align: left;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-.nav-btn:hover,
-.nav-btn.active {
-    background: #eef0ff;
-    color: #596be0;
-}
-
-.content {
-    flex: 1;
-    padding: 25px;
-    max-width: 1200px;
-    margin: auto;
-    width: 100%;
-}
-
-.section {
-    display: none;
-}
-
-.section.active {
-    display: block;
-}
-
-.page-title {
-    font-size: 28px;
-    margin-bottom: 7px;
-}
-
-.page-subtitle {
-    color: #777;
-    margin-bottom: 22px;
-}
-
-/* =========================
-   DASHBOARD
-========================= */
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    margin-bottom: 25px;
-}
-
-.stat-card {
-    background: white;
-    padding: 20px;
-    border-radius: 18px;
-    border: 1px solid #eee;
-}
-
-.stat-card h3 {
-    font-size: 27px;
-    margin-bottom: 5px;
-}
-
-.stat-card p {
-    color: #777;
-}
-
-.routine-card {
-    background: white;
-    padding: 22px;
-    border-radius: 20px;
-    border: 1px solid #eee;
-}
-
-.routine-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 18px;
-}
-
-.add-routine {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 18px;
-}
-
-.add-routine input,
-.add-routine select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    outline: none;
-}
-
-.add-routine input {
-    flex: 1;
-}
-
-.small-btn {
-    padding: 11px 16px;
-    border-radius: 10px;
-    background: #667eea;
-    color: white;
-    font-weight: 700;
-}
-
-.routine-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.routine-item {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    padding: 14px;
-    background: #f8f9fd;
-    border-radius: 14px;
-}
-
-.routine-check {
-    width: 22px;
-    height: 22px;
-    accent-color: #667eea;
-}
-
-.routine-info {
-    flex: 1;
-}
-
-.routine-info strong {
-    display: block;
-    margin-bottom: 4px;
-}
-
-.category {
-    display: inline-block;
-    padding: 4px 8px;
-    border-radius: 8px;
-    background: #e8eaff;
-    color: #596be0;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.delete-btn {
-    background: #fee2e2;
-    color: #dc2626;
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
-}
-
-/* =========================
-   CHARACTERS
-========================= */
-
-.character-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 15px;
-}
-
-.character-card {
-    background: white;
-    border: 2px solid transparent;
-    border-radius: 18px;
-    padding: 12px;
-    text-align: center;
-    transition: .2s;
-}
-
-.character-card:hover {
-    transform: translateY(-3px);
-}
-
-.character-card.selected {
-    border-color: #667eea;
-    background: #f1f2ff;
-}
-
-.character-card img {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 14px;
-    margin-bottom: 8px;
-}
-
-.character-card strong {
-    font-size: 13px;
-}
-
-/* =========================
-   FRIENDS
-========================= */
-
-.friend-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.friend-card {
-    background: white;
-    padding: 18px;
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.friend-card .avatar {
-    width: 52px;
-    height: 52px;
-}
-
-.friend-info {
-    flex: 1;
-}
-
-.friend-info strong {
-    display: block;
-}
-
-.friend-info small {
-    color: #777;
-}
-
-.request-card {
-    background: white;
-    padding: 16px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.request-actions {
-    margin-left: auto;
-    display: flex;
-    gap: 7px;
-}
-
-.accept {
-    background: #16a34a;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-.reject {
-    background: #eee;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-/* =========================
-   MESSAGES
-========================= */
-
-.messages-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    height: 650px;
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid #eee;
-}
-
-.chat-list {
-    border-right: 1px solid #eee;
-    overflow-y: auto;
-}
-
-.chat-user {
-    padding: 15px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    cursor: pointer;
-}
-
-.chat-user:hover,
-.chat-user.selected {
-    background: #f1f2ff;
-}
-
-.chat-area {
-    display: flex;
-    flex-direction: column;
-}
-
-.chat-header {
-    padding: 16px;
-    border-bottom: 1px solid #eee;
-    font-weight: bold;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 18px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.message {
-    max-width: 70%;
-    padding: 10px 14px;
-    border-radius: 16px;
-    background: #eee;
-    align-self: flex-start;
-}
-
-.message.mine {
-    background: #667eea;
-    color: white;
-    align-self: flex-end;
-}
-
-.chat-input {
-    display: flex;
-    padding: 12px;
-    border-top: 1px solid #eee;
-    gap: 8px;
-}
-
-.chat-input input {
-    flex: 1;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 12px;
-}
-
-/* =========================
-   PROFILE
-========================= */
-
-.profile-card {
-    background: white;
-    border-radius: 20px;
-    padding: 25px;
-    max-width: 650px;
-}
-
-.profile-main {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-bottom: 25px;
-}
-
-.profile-main .avatar {
-    width: 90px;
-    height: 90px;
-    font-size: 50px;
-}
-
-.profile-details p {
-    color: #777;
-    margin-top: 5px;
-}
-
-.account-box {
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-    margin-top: 20px;
-}
-
-.danger-btn {
-    background: #fee2e2;
-    color: #dc2626;
-    padding: 12px 15px;
-    border-radius: 10px;
-    margin-top: 15px;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    z-index: 100;
-}
-
-.modal-card {
-    width: 100%;
-    max-width: 500px;
-    background: white;
-    padding: 25px;
-    border-radius: 20px;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.close-btn {
-    background: #eee;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width: 900px) {
-    .stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .character-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .friend-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media(max-width: 700px) {
-    .sidebar {
-        width: 70px;
-        padding: 12px 8px;
-    }
-
-    .nav-btn {
-        text-align: center;
-        font-size: 0;
-    }
-
-    .nav-btn::first-letter {
-        font-size: 20px;
-    }
-
-    .content {
-        padding: 15px;
-    }
-
-    .stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .character-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    .friend-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .messages-layout {
-        grid-template-columns: 90px 1fr;
-    }
-
-    .chat-user span,
-    .chat-user strong {
-        display: none;
-    }
-
-    .add-routine {
-        flex-direction: column;
-    }
-}
-
-@media(max-width: 450px) {
-    .stats {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .character-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .topbar {
-        padding: 0 12px;
-    }
-
-    .brand {
-        font-size: 20px;
-    }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#050505;
+  --card:#111;
+  --card2:#171717;
+  --border:#292929;
+  --text:#f5f5f5;
+  --muted:#999;
+  --accent:#7c5cff;
+  --accent2:#a78bfa;
+  --danger:#ef4444;
+  --success:#22c55e;
+}
+body{
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.screen{min-height:100vh}
+
+/* AUTH */
+.auth{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:#000;
+}
+.auth-box{
+  width:100%;
+  max-width:430px;
+  background:#0d0d0d;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:30px;
+  box-shadow:0 20px 70px #000;
+}
+.logo{
+  font-size:32px;
+  font-weight:900;
+  text-align:center;
+  margin-bottom:8px;
+}
+.logo span{color:var(--accent2)}
+.subtitle{
+  color:var(--muted);
+  text-align:center;
+  margin-bottom:25px;
+}
+.auth-tabs{display:flex;gap:8px;margin-bottom:20px}
+.auth-tabs button{
+  flex:1;padding:11px;border:1px solid var(--border);
+  background:#151515;color:#aaa;border-radius:10px;
+}
+.auth-tabs button.active{
+  background:var(--accent);color:white;border-color:var(--accent)
+}
+.field{margin-bottom:15px}
+.field label{
+  display:block;font-size:13px;color:#aaa;margin-bottom:7px
+}
+.field input,.field textarea{
+  width:100%;background:#171717;color:white;
+  border:1px solid #303030;border-radius:11px;
+  padding:12px;outline:none;
+}
+.field input:focus,.field textarea:focus{
+  border-color:var(--accent)
+}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:48px}
+.eye{
+  position:absolute;right:10px;top:50%;
+  transform:translateY(-50%);
+  border:0;background:none;color:#aaa;
+}
+.primary{
+  width:100%;border:0;border-radius:11px;
+  padding:13px;background:var(--accent);
+  color:white;font-weight:800;
+}
+.secondary{
+  border:1px solid var(--border);border-radius:10px;
+  padding:10px 13px;background:#161616;color:white;
+}
+.link{
+  background:none;border:0;color:var(--accent2);
+  margin-top:14px;text-align:center;width:100%;
+}
+.message{
+  margin:10px 0;color:#fca5a5;font-size:13px;text-align:center
+}
+
+/* APP */
+.app{display:none;min-height:100vh}
+.app.active{display:block}
+.topbar{
+  position:sticky;top:0;z-index:20;
+  height:66px;background:#080808eF;
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;
+}
+.brand{font-size:22px;font-weight:900}
+.brand span{color:var(--accent2)}
+.top-actions{display:flex;gap:8px}
+.icon-btn{
+  width:42px;height:42px;border-radius:50%;
+  border:1px solid var(--border);background:#151515;color:white;
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  object-fit:cover;background:#222;border:2px solid #333;
+}
+.layout{
+  display:grid;grid-template-columns:230px 1fr;
+  max-width:1400px;margin:auto;
+}
+.sidebar{
+  min-height:calc(100vh - 66px);
+  border-right:1px solid var(--border);
+  padding:18px 12px;
+  position:sticky;top:66px;
+}
+.nav{
+  display:flex;flex-direction:column;gap:6px
+}
+.nav button{
+  border:0;background:transparent;color:#aaa;
+  text-align:left;padding:13px;border-radius:10px;
+  font-weight:700;
+}
+.nav button:hover,.nav button.active{
+  background:#181818;color:white
+}
+.main{padding:25px;max-width:1100px;width:100%;margin:auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{
+  font-size:28px;font-weight:900;margin-bottom:5px
+}
+.page-subtitle{color:var(--muted);margin-bottom:22px}
+
+/* DASHBOARD */
+.hero{
+  padding:25px;border:1px solid var(--border);
+  border-radius:20px;background:linear-gradient(135deg,#15121f,#0d0d0d);
+  margin-bottom:20px;
+}
+.hero h2{font-size:27px;margin-bottom:6px}
+.hero p{color:#aaa}
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  margin-bottom:20px;
+}
+.stat{
+  background:var(--card);border:1px solid var(--border);
+  padding:18px;border-radius:15px
+}
+.stat strong{display:block;font-size:25px}
+.stat span{font-size:12px;color:#888}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:18px;padding:20px;margin-bottom:18px;
+}
+.card-title{
+  font-size:18px;font-weight:800;margin-bottom:15px
+}
+.progress{
+  height:9px;background:#252525;border-radius:99px;overflow:hidden
+}
+.progress div{
+  height:100%;background:linear-gradient(90deg,var(--accent),#b794ff);
+  border-radius:99px;transition:.3s
+}
+.progress-label{
+  display:flex;justify-content:space-between;
+  color:#999;font-size:13px;margin-bottom:8px
+}
+
+/* ROUTINES */
+.routine-add{display:flex;gap:8px;margin-bottom:20px}
+.routine-add input{
+  flex:1;background:#151515;border:1px solid var(--border);
+  border-radius:11px;color:white;padding:12px
+}
+.routine{
+  display:flex;align-items:center;gap:14px;
+  padding:15px;background:#151515;
+  border:1px solid var(--border);border-radius:13px;
+  margin-bottom:9px;
+}
+.check{
+  width:25px;height:25px;border-radius:7px;
+  border:2px solid #555;background:#111;
+  display:flex;align-items:center;justify-content:center;
+  color:white;flex-shrink:0;
+}
+.check.done{background:var(--success);border-color:var(--success)}
+.routine-info{flex:1}
+.routine-info strong{display:block}
+.routine-info small{color:#777}
+.delete{
+  border:0;background:none;color:#777;font-size:18px
+}
+.delete:hover{color:var(--danger)}
+
+/* CALENDAR */
+.calendar-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:15px
+}
+.calendar-grid{
+  display:grid;grid-template-columns:repeat(7,1fr);gap:6px
+}
+.day-name{
+  text-align:center;color:#777;font-size:12px;padding:5px
+}
+.day{
+  min-height:60px;background:#151515;border:1px solid #222;
+  border-radius:9px;padding:7px;cursor:pointer;
+}
+.day:hover{border-color:#555}
+.day.today{border-color:var(--accent)}
+.day.completed{background:#112016;border-color:#1c5a2c}
+.day-num{font-size:12px;color:#aaa}
+.day-dot{
+  width:7px;height:7px;background:var(--success);
+  border-radius:50%;margin-top:10px
+}
+
+/* GRAPH */
+canvas{
+  width:100%!important;height:300px!important;
+  background:#0c0c0c;border-radius:12px
+}
+
+/* PROFILE */
+.profile-header{
+  display:flex;align-items:center;gap:20px;
+  padding:22px;background:#111;border:1px solid var(--border);
+  border-radius:18px;margin-bottom:18px
+}
+.profile-big{
+  width:90px;height:90px;border-radius:50%;
+  object-fit:cover;border:3px solid var(--accent)
+}
+.profile-name{font-size:23px;font-weight:900}
+.profile-email{color:#777}
+.anime-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:12px
+}
+.anime{
+  background:#151515;border:2px solid #222;
+  border-radius:15px;padding:8px;text-align:center;
+  transition:.2s;
+}
+.anime:hover{transform:translateY(-3px);border-color:#555}
+.anime.selected{border-color:var(--accent);box-shadow:0 0 0 2px #7c5cff33}
+.anime img{
+  width:100%;aspect-ratio:1;border-radius:11px;
+  object-fit:cover;background:#222
+}
+.anime span{
+  display:block;font-size:11px;margin-top:7px;
+  color:#bbb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+
+/* FRIENDS / CHAT */
+.friend-list{display:grid;gap:10px}
+.friend{
+  display:flex;align-items:center;gap:12px;
+  background:#151515;border:1px solid var(--border);
+  border-radius:13px;padding:12px
+}
+.friend img{width:48px;height:48px;border-radius:50%;object-fit:cover}
+.friend-info{flex:1}
+.friend-info small{display:block;color:#777}
+.chat{
+  height:500px;border:1px solid var(--border);
+  border-radius:18px;display:flex;flex-direction:column;
+  overflow:hidden;background:#0c0c0c
+}
+.chat-head{
+  padding:14px;border-bottom:1px solid var(--border);
+  font-weight:800
+}
+.messages{flex:1;overflow:auto;padding:15px}
+.bubble{
+  max-width:75%;padding:10px 13px;border-radius:15px;
+  margin-bottom:9px;background:#222
+}
+.bubble.me{margin-left:auto;background:var(--accent)}
+.chat-input{
+  display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)
+}
+.chat-input input{
+  flex:1;background:#181818;color:white;border:1px solid #292929;
+  border-radius:10px;padding:11px
+}
+
+/* MODAL */
+.modal{
+  position:fixed;inset:0;background:#000b;z-index:100;
+  display:flex;align-items:center;justify-content:center;padding:20px
+}
+.modal-box{
+  width:100%;max-width:520px;background:#111;
+  border:1px solid var(--border);border-radius:20px;
+  padding:22px;max-height:90vh;overflow:auto
+}
+.modal-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:18px
+}
+.close{background:none;border:0;color:#aaa;font-size:25px}
+.request{
+  padding:13px;background:#171717;border:1px solid var(--border);
+  border-radius:12px;margin-bottom:8px
+}
+.request-actions{display:flex;gap:7px;margin-top:8px}
+.danger{background:#2a1111;color:#ff8a8a;border:1px solid #4b2020}
+
+/* MOBILE */
+.mobile-nav{display:none}
+@media(max-width:800px){
+  .layout{display:block}
+  .sidebar{display:none}
+  .main{padding:17px 13px 85px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .anime-grid{grid-template-columns:repeat(3,1fr)}
+  .mobile-nav{
+    position:fixed;display:flex;bottom:0;left:0;right:0;
+    height:64px;background:#0b0b0b;border-top:1px solid var(--border);
+    z-index:30;justify-content:space-around
+  }
+  .mobile-nav button{
+    border:0;background:none;color:#777;font-size:20px
+  }
+  .mobile-nav button.active{color:white}
+}
+@media(max-width:430px){
+  .anime-grid{grid-template-columns:repeat(3,1fr);gap:7px}
+  .anime span{font-size:9px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     AUTH PAGE
-========================= -->
+<!-- AUTH -->
+<section id="authScreen" class="auth">
+  <div class="auth-box">
+    <div class="logo">Pulse<span>Track</span></div>
+    <div class="subtitle">Build better daily habits.</div>
 
-<div id="authPage" class="auth-page">
-
-    <div class="auth-card">
-
-        <div class="logo">Daily<span>Flow</span></div>
-        <p class="subtitle">Build your day. Build yourself.</p>
-
-        <!-- LOGIN -->
-
-        <div id="loginForm">
-
-            <h2>Welcome Back 👋</h2>
-
-            <div class="form-group">
-                <label>Username</label>
-                <input id="loginUsername" type="text" placeholder="Enter username">
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-
-                <div class="password-wrap">
-                    <input id="loginPassword" type="password" placeholder="Enter password">
-                    <button class="show-password" onclick="togglePassword('loginPassword', this)">
-                        Show
-                    </button>
-                </div>
-
-                <div id="loginError" class="error"></div>
-            </div>
-
-            <button class="primary-btn" onclick="login()">Login</button>
-
-            <button class="text-btn" onclick="showForgotPassword()">
-                Forgot Password?
-            </button>
-
-            <button class="secondary-btn" onclick="showSignup()">
-                Create New Account
-            </button>
-
-        </div>
-
-        <!-- SIGNUP -->
-
-        <div id="signupForm" class="hidden">
-
-            <h2>Create Account</h2>
-
-            <div class="form-group">
-                <label>Username</label>
-                <input id="signupUsername" type="text" placeholder="Choose username">
-            </div>
-
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input id="signupDOB" type="date">
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-
-                <div class="password-wrap">
-                    <input id="signupPassword" type="password" placeholder="Create password">
-                    <button class="show-password" onclick="togglePassword('signupPassword', this)">
-                        Show
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Confirm Password</label>
-
-                <div class="password-wrap">
-                    <input id="signupConfirm" type="password" placeholder="Confirm password">
-                    <button class="show-password" onclick="togglePassword('signupConfirm', this)">
-                        Show
-                    </button>
-                </div>
-            </div>
-
-            <div id="signupError" class="error"></div>
-
-            <button class="primary-btn" onclick="signup()">Create Account</button>
-
-            <button class="secondary-btn" onclick="showLogin()">
-                Back to Login
-            </button>
-
-        </div>
-
-        <!-- FORGOT PASSWORD -->
-
-        <div id="forgotForm" class="hidden">
-
-            <h2>Reset Password</h2>
-
-            <p class="subtitle">
-                Enter your username and date of birth to reset your password.
-            </p>
-
-            <div class="form-group">
-                <label>Username</label>
-                <input id="forgotUsername" type="text">
-            </div>
-
-            <div class="form-group">
-                <label>Date of Birth</label>
-                <input id="forgotDOB" type="date">
-            </div>
-
-            <div id="forgotError" class="error"></div>
-
-            <button class="primary-btn" onclick="verifyDOB()">
-                Verify
-            </button>
-
-            <button class="secondary-btn" onclick="showLogin()">
-                Back
-            </button>
-
-        </div>
-
-        <!-- RESET PASSWORD -->
-
-        <div id="resetForm" class="hidden">
-
-            <h2>Create New Password</h2>
-
-            <div class="form-group">
-                <label>New Password</label>
-
-                <div class="password-wrap">
-                    <input id="newPassword" type="password">
-                    <button class="show-password" onclick="togglePassword('newPassword', this)">
-                        Show
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Confirm New Password</label>
-
-                <div class="password-wrap">
-                    <input id="confirmNewPassword" type="password">
-                    <button class="show-password" onclick="togglePassword('confirmNewPassword', this)">
-                        Show
-                    </button>
-                </div>
-            </div>
-
-            <div id="resetError" class="error"></div>
-
-            <button class="primary-btn" onclick="resetPassword()">
-                Reset Password
-            </button>
-
-        </div>
-
+    <div class="auth-tabs">
+      <button id="loginTab" class="active" onclick="showAuth('login')">Login</button>
+      <button id="signupTab" onclick="showAuth('signup')">Sign Up</button>
     </div>
+
+    <div id="loginForm">
+      <div class="field">
+        <label>Username or email</label>
+        <input id="loginUser" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="password-wrap">
+          <input id="loginPass" type="password" autocomplete="current-password">
+          <button class="eye" onclick="togglePassword('loginPass',this)">👁</button>
+        </div>
+      </div>
+
+      <div id="loginMessage" class="message"></div>
+      <button class="primary" onclick="login()">Login</button>
+      <button class="link" onclick="forgotPassword()">Forgot password?</button>
+    </div>
+
+    <div id="signupForm" class="hidden">
+      <div class="field">
+        <label>Username</label>
+        <input id="signupUser" autocomplete="username">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input id="signupEmail" type="email" autocomplete="email">
+      </div>
+
+      <div class="field">
+        <label>Date of birth</label>
+        <input id="signupDob" type="date">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <div class="password-wrap">
+          <input id="signupPass" type="password" autocomplete="new-password">
+          <button class="eye" onclick="togglePassword('signupPass',this)">👁</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Confirm password</label>
+        <div class="password-wrap">
+          <input id="signupConfirm" type="password" autocomplete="new-password">
+          <button class="eye" onclick="togglePassword('signupConfirm',this)">👁</button>
+        </div>
+      </div>
+
+      <div id="signupMessage" class="message"></div>
+      <button class="primary" onclick="signup()">Create account</button>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="app" class="app">
+
+<header class="topbar">
+  <div class="brand">Pulse<span>Track</span></div>
+  <div class="top-actions">
+    <button class="icon-btn" onclick="openRequests()">👥</button>
+    <button class="icon-btn" onclick="openAddAccount()">＋</button>
+    <img id="topAvatar" class="avatar" onclick="navigate('profile')" src="">
+  </div>
+</header>
+
+<div class="layout">
+
+<aside class="sidebar">
+  <nav class="nav">
+    <button data-page="home" onclick="navigate('home')">🏠 Dashboard</button>
+    <button data-page="routine" onclick="navigate('routine')">✅ Daily Routine</button>
+    <button data-page="calendar" onclick="navigate('calendar')">📅 Calendar</button>
+    <button data-page="progress" onclick="navigate('progress')">📈 Progress</button>
+    <button data-page="friends" onclick="navigate('friends')">👥 Friends</button>
+    <button data-page="chat" onclick="navigate('chat')">💬 Messages</button>
+    <button data-page="profile" onclick="navigate('profile')">👤 Profile</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </nav>
+</aside>
+
+<main class="main">
+
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="hero">
+    <h2 id="welcome">Welcome back 👋</h2>
+    <p>Keep moving forward, one day at a time.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><strong id="statCompleted">0</strong><span>Completed today</span></div>
+    <div class="stat"><strong id="statTotal">0</strong><span>Total routines</span></div>
+    <div class="stat"><strong id="statPercent">0%</strong><span>Today's progress</span></div>
+    <div class="stat"><strong id="statStreak">0</strong><span>Day streak</span></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Today's progress</div>
+    <div class="progress-label">
+      <span>Daily completion</span><span id="homePercent">0%</span>
+    </div>
+    <div class="progress"><div id="homeProgress" style="width:0%"></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Today's routine</div>
+    <div id="homeRoutine"></div>
+  </div>
+</section>
+
+<!-- ROUTINE -->
+<section id="routine" class="page">
+  <div class="page-title">Daily Routine</div>
+  <div class="page-subtitle">Add anything you want to track.</div>
+
+  <div class="routine-add">
+    <input id="routineInput" placeholder="e.g. Study, Reading, Exercise, Meditation">
+    <button class="primary" style="width:auto" onclick="addRoutine()">Add</button>
+  </div>
+
+  <div class="card">
+    <div id="routineList"></div>
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section id="calendar" class="page">
+  <div class="page-title">Calendar Tracking</div>
+  <div class="page-subtitle">See which days you completed your routine.</div>
+
+  <div class="card">
+    <div class="calendar-head">
+      <button class="secondary" onclick="changeMonth(-1)">←</button>
+      <strong id="monthTitle"></strong>
+      <button class="secondary" onclick="changeMonth(1)">→</button>
+    </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress" class="page">
+  <div class="page-title">Progress</div>
+  <div class="page-subtitle">Your daily completion trend.</div>
+
+  <div class="card">
+    <canvas id="progressChart" width="900" height="300"></canvas>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Overall progress</div>
+    <div class="progress-label">
+      <span>All-time completion</span>
+      <span id="overallPercent">0%</span>
+    </div>
+    <div class="progress"><div id="overallProgress" style="width:0%"></div></div>
+  </div>
+</section>
+
+<!-- FRIENDS -->
+<section id="friends" class="page">
+  <div class="page-title">Friends</div>
+  <div class="page-subtitle">Connect with people and chat with them.</div>
+
+  <div class="card">
+    <div class="card-title">Add a friend</div>
+    <div class="routine-add">
+      <input id="friendSearch" placeholder="Enter username">
+      <button class="primary" style="width:auto" onclick="sendFriendRequest()">Send request</button>
+    </div>
+    <div id="friendMessage" class="message"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Your friends</div>
+    <div id="friendList" class="friend-list"></div>
+  </div>
+</section>
+
+<!-- CHAT -->
+<section id="chat" class="page">
+  <div class="page-title">Messages</div>
+  <div class="page-subtitle">Your local chat demo.</div>
+
+  <div class="chat">
+    <div class="chat-head" id="chatTitle">Select a friend</div>
+    <div class="messages" id="messages"></div>
+    <div class="chat-input">
+      <input id="chatInput" placeholder="Write a message..." onkeydown="if(event.key==='Enter')sendMessage()">
+      <button class="primary" style="width:auto" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="page">
+  <div class="page-title">Profile</div>
+  <div class="page-subtitle">Customize your PulseTrack profile.</div>
+
+  <div class="profile-header">
+    <img id="profileAvatar" class="profile-big" src="">
+    <div>
+      <div id="profileName" class="profile-name"></div>
+      <div id="profileEmail" class="profile-email"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Choose your anime profile picture</div>
+    <div class="anime-grid" id="animeGrid"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Account</div>
+    <button class="secondary" onclick="openAddAccount()">＋ Add account</button>
+    <button class="secondary danger" style="margin-left:7px" onclick="clearUserData()">Reset my routine data</button>
+  </div>
+</section>
+
+</main>
 </div>
 
-
-<!-- =========================
-     MAIN APP
-========================= -->
-
-<div id="app" class="app hidden">
-
-    <header class="topbar">
-
-        <div class="brand">
-            Daily<span>Flow</span>
-        </div>
-
-        <div class="top-actions">
-
-            <div class="profile-mini" onclick="openSection('profile')">
-                <div id="topAvatar" class="avatar">👤</div>
-                <strong id="topUsername">User</strong>
-            </div>
-
-        </div>
-
-    </header>
-
-    <div class="layout">
-
-        <aside class="sidebar">
-
-            <button class="nav-btn active" onclick="openSection('home')">
-                🏠 <span>Home</span>
-            </button>
-
-            <button class="nav-btn" onclick="openSection('routine')">
-                📅 <span>Routine</span>
-            </button>
-
-            <button class="nav-btn" onclick="openSection('characters')">
-                🎭 <span>Character</span>
-            </button>
-
-            <button class="nav-btn" onclick="openSection('friends')">
-                👥 <span>Friends</span>
-            </button>
-
-            <button class="nav-btn" onclick="openSection('messages')">
-                💬 <span>Messages</span>
-            </button>
-
-            <button class="nav-btn" onclick="openSection('profile')">
-                👤 <span>Profile</span>
-            </button>
-
-        </aside>
-
-        <main class="content">
-
-            <!-- HOME -->
-
-            <section id="home" class="section active">
-
-                <h1 class="page-title">
-                    Hello, <span id="welcomeName">User</span> 👋
-                </h1>
-
-                <p class="page-subtitle">
-                    Stay consistent with your daily routine.
-                </p>
-
-                <div class="stats">
-
-                    <div class="stat-card">
-                        <h3 id="totalTasks">0</h3>
-                        <p>Total Tasks</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h3 id="completedTasks">0</h3>
-                        <p>Completed</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h3 id="remainingTasks">0</h3>
-                        <p>Remaining</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h3 id="progressPercent">0%</h3>
-                        <p>Progress</p>
-                    </div>
-
-                </div>
-
-                <div class="routine-card">
-
-                    <div class="routine-header">
-                        <h2>Today's Routine</h2>
-                        <button class="small-btn" onclick="openSection('routine')">
-                            Manage
-                        </button>
-                    </div>
-
-                    <div id="homeRoutineList" class="routine-list"></div>
-
-                </div>
-
-            </section>
-
-
-            <!-- ROUTINE -->
-
-            <section id="routine" class="section">
-
-                <h1 class="page-title">Daily Routine 📅</h1>
-
-                <p class="page-subtitle">
-                    Add anything you want to do today.
-                    DailyFlow will automatically classify it.
-                </p>
-
-                <div class="routine-card">
-
-                    <div class="add-routine">
-
-                        <input
-                            id="routineInput"
-                            type="text"
-                            placeholder="Example: Read a book, exercise, meditate..."
-                            onkeydown="if(event.key==='Enter') addRoutine()"
-                        >
-
-                        <button class="small-btn" onclick="addRoutine()">
-                            Add
-                        </button>
-
-                    </div>
-
-                    <div id="classificationHint" class="success"></div>
-
-                    <br>
-
-                    <div id="routineList" class="routine-list"></div>
-
-                </div>
-
-            </section>
-
-
-            <!-- CHARACTERS -->
-
-            <section id="characters" class="section">
-
-                <h1 class="page-title">Choose Your Character 🎭</h1>
-
-                <p class="page-subtitle">
-                    Select the character you want to use as your profile picture.
-                </p>
-
-                <div id="characterGrid" class="character-grid"></div>
-
-            </section>
-
-
-            <!-- FRIENDS -->
-
-            <section id="friends" class="section">
-
-                <h1 class="page-title">Friends 👥</h1>
-
-                <p class="page-subtitle">
-                    Connect with your friends.
-                </p>
-
-                <div class="routine-card">
-
-                    <h2 style="margin-bottom:15px;">
-                        Add Friend
-                    </h2>
-
-                    <div class="add-routine">
-
-                        <input
-                            id="friendUsername"
-                            placeholder="Enter username"
-                        >
-
-                        <button class="small-btn" onclick="sendFriendRequest()">
-                            Send Request
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <br>
-
-                <div class="routine-card">
-
-                    <h2 style="margin-bottom:15px;">
-                        Friend Requests
-                    </h2>
-
-                    <div id="requestList"></div>
-
-                </div>
-
-                <br>
-
-                <div class="routine-card">
-
-                    <h2 style="margin-bottom:15px;">
-                        My Friends
-                    </h2>
-
-                    <div id="friendList" class="friend-grid"></div>
-
-                </div>
-
-            </section>
-
-
-            <!-- MESSAGES -->
-
-            <section id="messages" class="section">
-
-                <h1 class="page-title">Messages 💬</h1>
-
-                <p class="page-subtitle">
-                    Chat with your friends.
-                </p>
-
-                <div class="messages-layout">
-
-                    <div id="chatList" class="chat-list"></div>
-
-                    <div class="chat-area">
-
-                        <div id="chatHeader" class="chat-header">
-                            Select a friend
-                        </div>
-
-                        <div id="chatMessages" class="chat-messages"></div>
-
-                        <div class="chat-input">
-
-                            <input
-                                id="messageInput"
-                                placeholder="Type a message..."
-                                onkeydown="if(event.key==='Enter') sendMessage()"
-                            >
-
-                            <button class="small-btn" onclick="sendMessage()">
-                                Send
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            <!-- PROFILE -->
-
-            <section id="profile" class="section">
-
-                <h1 class="page-title">Profile 👤</h1>
-
-                <div class="profile-card">
-
-                    <div class="profile-main">
-
-                        <div id="profileAvatar" class="avatar">
-                            👤
-                        </div>
-
-                        <div class="profile-details">
-
-                            <h2 id="profileUsername">
-                                User
-                            </h2>
-
-                            <p id="profileDOB">
-                                Date of birth
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                    <button class="primary-btn" onclick="openSection('characters')">
-                        Change Anime Character
-                    </button>
-
-                    <div class="account-box">
-
-                        <h3>Account</h3>
-
-                        <button class="secondary-btn" onclick="addAccount()">
-                            ＋ Add Account
-                        </button>
-
-                        <button class="danger-btn" onclick="logout()">
-                            Log Out
-                        </button>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-        </main>
-
-    </div>
+<div class="mobile-nav">
+  <button onclick="navigate('home')">🏠</button>
+  <button onclick="navigate('routine')">✅</button>
+  <button onclick="navigate('calendar')">📅</button>
+  <button onclick="navigate('progress')">📈</button>
+  <button onclick="navigate('profile')">👤</button>
+</div>
 
 </div>
 
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <strong id="modalTitle">Window</strong>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div id="modalContent"></div>
+  </div>
+</div>
 
 <script>
+/* =========================
+   STORAGE / ACCOUNT SYSTEM
+========================= */
 
-/* ==========================================
-   STORAGE
-========================================== */
+const DEFAULT_AVATAR =
+  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=PulseTrack";
 
-const USERS_KEY = "dailyflow_users";
-const CURRENT_USER_KEY = "dailyflow_current_user";
-
-function getUsers() {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
-}
-
-function saveUsers(users) {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-function getCurrentUser() {
-    const username = localStorage.getItem(CURRENT_USER_KEY);
-
-    if (!username) return null;
-
-    return getUsers().find(
-        user => user.username.toLowerCase() === username.toLowerCase()
-    );
-}
-
-function updateCurrentUser(updatedUser) {
-
-    let users = getUsers();
-
-    const index = users.findIndex(
-        user => user.username.toLowerCase() === updatedUser.username.toLowerCase()
-    );
-
-    if (index !== -1) {
-        users[index] = updatedUser;
-        saveUsers(users);
-    }
-}
-
-
-/* ==========================================
-   CHARACTERS
-========================================== */
-
-/*
-    These are anime-inspired placeholder character images.
-    Replace the image URLs with your own licensed images
-    if you want specific copyrighted characters.
-*/
-
-const characters = [
-
-    {
-        name: "Ninja Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ninja"
-    },
-
-    {
-        name: "Saiyan Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=goku"
-    },
-
-    {
-        name: "Shadow Fighter",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=shadow"
-    },
-
-    {
-        name: "Blue Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=hero"
-    },
-
-    {
-        name: "Sword Master",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=sword"
-    },
-
-    {
-        name: "Fire Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=fire"
-    },
-
-    {
-        name: "Ice Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ice"
-    },
-
-    {
-        name: "Galaxy Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=galaxy"
-    },
-
-    {
-        name: "Lightning Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=lightning"
-    },
-
-    {
-        name: "Dark Ninja",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=dark"
-    },
-
-    {
-        name: "Red Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=red"
-    },
-
-    {
-        name: "Green Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=green"
-    },
-
-    {
-        name: "Samurai",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=samurai"
-    },
-
-    {
-        name: "Young Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=young"
-    },
-
-    {
-        name: "Mystic Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=mystic"
-    },
-
-    {
-        name: "Dragon Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=dragon"
-    },
-
-    {
-        name: "Space Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=space"
-    },
-
-    {
-        name: "Storm Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=storm"
-    },
-
-    {
-        name: "Spirit Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=spirit"
-    },
-
-    {
-        name: "Legend Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=legend"
-    },
-
-    {
-        name: "Moon Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=moon"
-    },
-
-    {
-        name: "Sun Warrior",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=sun"
-    },
-
-    {
-        name: "Ocean Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ocean"
-    },
-
-    {
-        name: "Phantom Hero",
-        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=phantom"
-    }
-
+const animeCharacters = [
+  ["Naruto","Naruto Uzumaki","Naruto"],
+  ["Goku","Son Goku","Dragon Ball"],
+  ["Vegeta","Vegeta","Dragon Ball"],
+  ["Luffy","Monkey D. Luffy","One Piece"],
+  ["Zoro","Roronoa Zoro","One Piece"],
+  ["Sasuke","Sasuke Uchiha","Naruto"],
+  ["Sakura","Sakura Haruno","Naruto"],
+  ["Kakashi","Kakashi Hatake","Naruto"],
+  ["Itachi","Itachi Uchiha","Naruto"],
+  ["Tanjiro","Tanjiro Kamado","Demon Slayer"],
+  ["Nezuko","Nezuko Kamado","Demon Slayer"],
+  ["Zenitsu","Zenitsu Agatsuma","Demon Slayer"],
+  ["Inosuke","Inosuke Hashibira","Demon Slayer"],
+  ["Gojo","Satoru Gojo","Jujutsu Kaisen"],
+  ["Yuji","Yuji Itadori","Jujutsu Kaisen"],
+  ["Megumi","Megumi Fushiguro","Jujutsu Kaisen"],
+  ["Killua","Killua Zoldyck","Hunter x Hunter"],
+  ["Gon","Gon Freecss","Hunter x Hunter"],
+  ["Ichigo","Ichigo Kurosaki","Bleach"],
+  ["Levi","Levi Ackerman","Attack on Titan"],
+  ["Eren","Eren Yeager","Attack on Titan"],
+  ["Mikasa","Mikasa Ackerman","Attack on Titan"],
+  ["Light","Light Yagami","Death Note"],
+  ["L","L Lawliet","Death Note"],
+  ["Saitama","Saitama","One Punch Man"],
+  ["Genos","Genos","One Punch Man"],
+  ["Edward","Edward Elric","Fullmetal Alchemist"],
+  ["Asta","Asta","Black Clover"],
+  ["Deku","Izuku Midoriya","My Hero Academia"],
+  ["Bakugo","Katsuki Bakugo","My Hero Academia"]
 ];
 
-
-/* ==========================================
-   AUTH
-========================================== */
-
-function showLogin() {
-
-    document.getElementById("loginForm").classList.remove("hidden");
-    document.getElementById("signupForm").classList.add("hidden");
-    document.getElementById("forgotForm").classList.add("hidden");
-    document.getElementById("resetForm").classList.add("hidden");
-
+/*
+  We use generated avatar art for the character choices so the app
+  works as a single GitHub HTML file without bundling copyrighted
+  image files. Replace the avatar URL with your own licensed images
+  later if you want official artwork.
+*/
+function avatarURL(seed){
+  return "https://api.dicebear.com/9.x/adventurer/svg?seed="+
+    encodeURIComponent(seed);
 }
 
-function showSignup() {
+let currentUser = null;
+let currentChat = null;
+let calendarDate = new Date();
 
-    document.getElementById("loginForm").classList.add("hidden");
-    document.getElementById("signupForm").classList.remove("hidden");
-    document.getElementById("forgotForm").classList.add("hidden");
-    document.getElementById("resetForm").classList.add("hidden");
-
+function accounts(){
+  return JSON.parse(localStorage.getItem("pulseAccounts") || "{}");
 }
 
-function showForgotPassword() {
-
-    document.getElementById("loginForm").classList.add("hidden");
-    document.getElementById("signupForm").classList.add("hidden");
-    document.getElementById("forgotForm").classList.remove("hidden");
-    document.getElementById("resetForm").classList.add("hidden");
-
+function saveAccounts(a){
+  localStorage.setItem("pulseAccounts",JSON.stringify(a));
 }
 
-function togglePassword(id, button) {
-
-    const input = document.getElementById(id);
-
-    if (input.type === "password") {
-        input.type = "text";
-        button.textContent = "Hide";
-    } else {
-        input.type = "password";
-        button.textContent = "Show";
-    }
-
+function getToday(){
+  return new Date().toISOString().slice(0,10);
 }
 
-
-/* ==========================================
-   SIGNUP
-========================================== */
-
-function signup() {
-
-    const username =
-        document.getElementById("signupUsername").value.trim();
-
-    const dob =
-        document.getElementById("signupDOB").value;
-
-    const password =
-        document.getElementById("signupPassword").value;
-
-    const confirm =
-        document.getElementById("signupConfirm").value;
-
-    const error =
-        document.getElementById("signupError");
-
-    error.textContent = "";
-
-    if (!username || !dob || !password || !confirm) {
-        error.textContent = "Please fill in all fields.";
-        return;
-    }
-
-    if (username.length < 3) {
-        error.textContent = "Username must be at least 3 characters.";
-        return;
-    }
-
-    if (password.length < 4) {
-        error.textContent = "Password must be at least 4 characters.";
-        return;
-    }
-
-    if (password !== confirm) {
-        error.textContent = "Passwords do not match.";
-        return;
-    }
-
-    let users = getUsers();
-
-    if (
-        users.some(
-            user => user.username.toLowerCase() === username.toLowerCase()
-        )
-    ) {
-        error.textContent = "Username already exists.";
-        return;
-    }
-
-    const newUser = {
-
-        username: username,
-
-        dob: dob,
-
-        password: password,
-
-        character: characters[0],
-
-        routine: [
-
-            {
-                id: Date.now(),
-                text: "Study for 30 minutes",
-                category: "Study",
-                completed: false
-            },
-
-            {
-                id: Date.now() + 1,
-                text: "Read a book",
-                category: "Reading",
-                completed: false
-            },
-
-            {
-                id: Date.now() + 2,
-                text: "Exercise",
-                category: "Exercise",
-                completed: false
-            },
-
-            {
-                id: Date.now() + 3,
-                text: "Meditation",
-                category: "Meditation",
-                completed: false
-            }
-
-        ],
-
-        friends: [],
-
-        requests: [],
-
-        sentRequests: [],
-
-        messages: {},
-
-        loginAttempts: 0
-
-    };
-
-    users.push(newUser);
-
-    saveUsers(users);
-
-    alert("Account created successfully!");
-
-    document.getElementById("loginUsername").value = username;
-
-    showLogin();
-
+function emptyUser(username,email,dob,password){
+  return {
+    username,
+    email,
+    dob,
+    password,
+    avatar:avatarURL(username),
+    routines:[
+      {id:Date.now(),name:"Study"},
+      {id:Date.now()+1,name:"Reading"},
+      {id:Date.now()+2,name:"Exercise"},
+      {id:Date.now()+3,name:"Meditation"}
+    ],
+    history:{},
+    friends:[],
+    requests:[],
+    sentRequests:[],
+    messages:{}
+  };
 }
 
-
-/* ==========================================
-   LOGIN
-========================================== */
-
-function login() {
-
-    const username =
-        document.getElementById("loginUsername").value.trim();
-
-    const password =
-        document.getElementById("loginPassword").value;
-
-    const error =
-        document.getElementById("loginError");
-
-    error.textContent = "";
-
-    const users = getUsers();
-
-    const user = users.find(
-        u => u.username.toLowerCase() === username.toLowerCase()
-    );
-
-    if (!user) {
-        error.textContent = "Account not found.";
-        return;
-    }
-
-    user.loginAttempts = user.loginAttempts || 0;
-
-    if (user.password !== password) {
-
-        user.loginAttempts++;
-
-        saveUsers(users);
-
-        const remaining = 3 - user.loginAttempts;
-
-        if (remaining <= 0) {
-
-            error.innerHTML =
-                'Too many incorrect attempts. <button class="text-btn" onclick="showForgotPassword()">Forgot Password?</button>';
-
-        } else {
-
-            error.textContent =
-                `Incorrect password. ${remaining} attempt(s) remaining.`;
-
-        }
-
-        return;
-    }
-
-    user.loginAttempts = 0;
-
-    saveUsers(users);
-
-    localStorage.setItem(CURRENT_USER_KEY, user.username);
-
-    openApp();
-
+function loadUser(){
+  const all=accounts();
+  currentUser=all[localStorage.getItem("pulseCurrent")] || null;
 }
 
-
-/* ==========================================
-   FORGOT PASSWORD
-========================================== */
-
-let resetUsername = null;
-
-function verifyDOB() {
-
-    const username =
-        document.getElementById("forgotUsername").value.trim();
-
-    const dob =
-        document.getElementById("forgotDOB").value;
-
-    const error =
-        document.getElementById("forgotError");
-
-    error.textContent = "";
-
-    const users = getUsers();
-
-    const user = users.find(
-        u => u.username.toLowerCase() === username.toLowerCase()
-    );
-
-    if (!user) {
-        error.textContent = "Account not found.";
-        return;
-    }
-
-    if (user.dob !== dob) {
-        error.textContent = "Date of birth does not match.";
-        return;
-    }
-
-    resetUsername = user.username;
-
-    document.getElementById("forgotForm").classList.add("hidden");
-    document.getElementById("resetForm").classList.remove("hidden");
-
+function saveCurrent(){
+  if(!currentUser)return;
+  const all=accounts();
+  all[currentUser.username]=currentUser;
+  saveAccounts(all);
 }
 
-
-function resetPassword() {
-
-    const password =
-        document.getElementById("newPassword").value;
-
-    const confirm =
-        document.getElementById("confirmNewPassword").value;
-
-    const error =
-        document.getElementById("resetError");
-
-    error.textContent = "";
-
-    if (!password || !confirm) {
-        error.textContent = "Please enter the new password.";
-        return;
-    }
-
-    if (password.length < 4) {
-        error.textContent = "Password must be at least 4 characters.";
-        return;
-    }
-
-    if (password !== confirm) {
-        error.textContent = "Passwords do not match.";
-        return;
-    }
-
-    let users = getUsers();
-
-    const user = users.find(
-        u => u.username.toLowerCase() === resetUsername.toLowerCase()
-    );
-
-    if (!user) {
-        error.textContent = "Account not found.";
-        return;
-    }
-
-    user.password = password;
-    user.loginAttempts = 0;
-
-    saveUsers(users);
-
-    alert("Password reset successfully!");
-
-    resetUsername = null;
-
-    document.getElementById("loginUsername").value = user.username;
-
-    showLogin();
-
+function showAuth(type){
+  document.getElementById("loginForm").classList.toggle("hidden",type!=="login");
+  document.getElementById("signupForm").classList.toggle("hidden",type!=="signup");
+  document.getElementById("loginTab").classList.toggle("active",type==="login");
+  document.getElementById("signupTab").classList.toggle("active",type==="signup");
 }
 
-
-/* ==========================================
-   OPEN APP
-========================================== */
-
-function openApp() {
-
-    document.getElementById("authPage").classList.add("hidden");
-
-    document.getElementById("app").classList.remove("hidden");
-
-    updateUserInterface();
-
+function togglePassword(id,button){
+  const input=document.getElementById(id);
+  input.type=input.type==="password"?"text":"password";
+  button.textContent=input.type==="password"?"👁":"🙈";
 }
 
+function signup(){
+  const username=document.getElementById("signupUser").value.trim();
+  const email=document.getElementById("signupEmail").value.trim();
+  const dob=document.getElementById("signupDob").value;
+  const pass=document.getElementById("signupPass").value;
+  const confirm=document.getElementById("signupConfirm").value;
+  const msg=document.getElementById("signupMessage");
 
-/* ==========================================
-   UI UPDATE
-========================================== */
+  if(!username||!email||!dob||!pass||!confirm){
+    msg.textContent="Please fill in every field.";return;
+  }
+  if(pass!==confirm){
+    msg.textContent="Passwords do not match.";return;
+  }
 
-function updateUserInterface() {
+  const all=accounts();
+  if(all[username]){
+    msg.textContent="That username already exists.";return;
+  }
 
-    const user = getCurrentUser();
+  all[username]=emptyUser(username,email,dob,pass);
+  saveAccounts(all);
+  localStorage.setItem("pulseCurrent",username);
 
-    if (!user) return;
-
-    document.getElementById("topUsername").textContent =
-        user.username;
-
-    document.getElementById("welcomeName").textContent =
-        user.username;
-
-    document.getElementById("profileUsername").textContent =
-        user.username;
-
-    document.getElementById("profileDOB").textContent =
-        "Date of birth: " + user.dob;
-
-    setAvatar("topAvatar", user.character);
-    setAvatar("profileAvatar", user.character);
-
-    renderRoutine();
-    renderCharacters();
-    renderFriends();
-    renderRequests();
-    renderChats();
-    updateStats();
-
+  currentUser=all[username];
+  startApp();
 }
 
+let failedAttempts=0;
 
-function setAvatar(id, character) {
+function login(){
+  const username=document.getElementById("loginUser").value.trim();
+  const pass=document.getElementById("loginPass").value;
+  const msg=document.getElementById("loginMessage");
+  const all=accounts();
 
-    const element = document.getElementById(id);
+  if(!all[username] || all[username].password!==pass){
+    failedAttempts++;
+    msg.textContent=
+      "Incorrect login. Attempt "+failedAttempts+"."+
+      (failedAttempts>=3?" Use Forgot password if needed.":"");
+    return;
+  }
 
-    if (!element) return;
-
-    if (character && character.image) {
-
-        element.innerHTML =
-            `<img src="${character.image}" alt="${character.name}">`;
-
-    } else {
-
-        element.textContent = "👤";
-
-    }
-
+  failedAttempts=0;
+  currentUser=all[username];
+  localStorage.setItem("pulseCurrent",username);
+  startApp();
 }
 
+function forgotPassword(){
+  const username=prompt("Enter your username:");
+  if(!username)return;
 
-/* ==========================================
+  const all=accounts();
+  if(!all[username]){
+    alert("Account not found.");
+    return;
+  }
+
+  const dob=prompt("Enter your date of birth exactly as saved (YYYY-MM-DD):");
+  if(dob!==all[username].dob){
+    alert("Date of birth does not match.");
+    return;
+  }
+
+  const newPassword=prompt("Enter your new password:");
+  if(!newPassword){
+    alert("Password cannot be empty.");
+    return;
+  }
+
+  all[username].password=newPassword;
+  saveAccounts(all);
+  alert("Password reset successfully. You can now log in.");
+}
+
+function logout(){
+  localStorage.removeItem("pulseCurrent");
+  currentUser=null;
+  document.getElementById("app").classList.remove("active");
+  document.getElementById("authScreen").style.display="flex";
+}
+
+function startApp(){
+  document.getElementById("authScreen").style.display="none";
+  document.getElementById("app").classList.add("active");
+  renderAll();
+  navigate("home");
+}
+
+/* =========================
    NAVIGATION
-========================================== */
+========================= */
 
-function openSection(sectionId) {
+function navigate(page){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const el=document.getElementById(page);
+  if(el)el.classList.add("active");
 
-    document.querySelectorAll(".section").forEach(section => {
-        section.classList.remove("active");
-    });
+  document.querySelectorAll(".nav button[data-page]").forEach(b=>{
+    b.classList.toggle("active",b.dataset.page===page);
+  });
 
-    document.getElementById(sectionId).classList.add("active");
-
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.remove("active");
-    });
-
-    const buttons = document.querySelectorAll(".nav-btn");
-
-    const map = {
-        home: 0,
-        routine: 1,
-        characters: 2,
-        friends: 3,
-        messages: 4,
-        profile: 5
-    };
-
-    if (map[sectionId] !== undefined) {
-        buttons[map[sectionId]].classList.add("active");
-    }
-
+  if(page==="calendar")renderCalendar();
+  if(page==="progress")drawChart();
+  if(page==="profile")renderProfile();
+  if(page==="friends")renderFriends();
+  if(page==="chat")renderChat();
 }
 
+/* =========================
+   ROUTINES
+========================= */
 
-/* ==========================================
-   ROUTINE CLASSIFICATION
-========================================== */
-
-function classifyRoutine(text) {
-
-    const value = text.toLowerCase();
-
-    const categories = {
-
-        "Study": [
-            "study",
-            "homework",
-            "school",
-            "math",
-            "science",
-            "learn",
-            "revision",
-            "revise",
-            "exam",
-            "class"
-        ],
-
-        "Reading": [
-            "read",
-            "reading",
-            "book",
-            "novel",
-            "story"
-        ],
-
-        "Exercise": [
-            "exercise",
-            "workout",
-            "gym",
-            "run",
-            "running",
-            "walk",
-            "walking",
-            "jog",
-            "cycling",
-            "sport",
-            "football",
-            "basketball"
-        ],
-
-        "Meditation": [
-            "meditate",
-            "meditation",
-            "mindfulness",
-            "breathing",
-            "prayer",
-            "relax"
-        ],
-
-        "Sleep": [
-            "sleep",
-            "nap",
-            "rest"
-        ],
-
-        "Creative": [
-            "draw",
-            "drawing",
-            "paint",
-            "painting",
-            "music",
-            "sing",
-            "singing",
-            "dance",
-            "coding",
-            "code"
-        ],
-
-        "Personal": [
-            "bath",
-            "shower",
-            "clean",
-            "organize",
-            "room",
-            "self care"
-        ]
-
-    };
-
-    for (const category in categories) {
-
-        if (
-            categories[category].some(
-                word => value.includes(word)
-            )
-        ) {
-            return category;
-        }
-
-    }
-
-    return "Other";
-
+function getTodayState(){
+  const today=getToday();
+  if(!currentUser.history[today]){
+    currentUser.history[today]={};
+  }
+  return currentUser.history[today];
 }
 
+function addRoutine(){
+  const input=document.getElementById("routineInput");
+  const name=input.value.trim();
 
-function addRoutine() {
+  if(!name)return;
 
-    const input =
-        document.getElementById("routineInput");
+  currentUser.routines.push({
+    id:Date.now(),
+    name:name
+  });
 
-    const text = input.value.trim();
-
-    if (!text) return;
-
-    const user = getCurrentUser();
-
-    if (!user) return;
-
-    const category = classifyRoutine(text);
-
-    if (!user.routine) {
-        user.routine = [];
-    }
-
-    user.routine.push({
-
-        id: Date.now(),
-
-        text: text,
-
-        category: category,
-
-        completed: false
-
-    });
-
-    updateCurrentUser(user);
-
-    input.value = "";
-
-    document.getElementById("classificationHint").textContent =
-        `Automatically classified as: ${category}`;
-
-    renderRoutine();
-
-    updateStats();
-
+  input.value="";
+  saveCurrent();
+  renderAll();
 }
 
-
-function renderRoutine() {
-
-    const user = getCurrentUser();
-
-    if (!user) return;
-
-    const list =
-        document.getElementById("routineList");
-
-    const homeList =
-        document.getElementById("homeRoutineList");
-
-    list.innerHTML = "";
-    homeList.innerHTML = "";
-
-    if (!user.routine || user.routine.length === 0) {
-
-        list.innerHTML =
-            "<p>No tasks yet. Add something to your routine.</p>";
-
-        homeList.innerHTML =
-            "<p>No tasks yet.</p>";
-
-        return;
-    }
-
-    user.routine.forEach(task => {
-
-        const item = document.createElement("div");
-
-        item.className = "routine-item";
-
-        item.innerHTML = `
-
-            <input
-                type="checkbox"
-                class="routine-check"
-                ${task.completed ? "checked" : ""}
-                onchange="toggleRoutine(${task.id})"
-            >
-
-            <div class="routine-info">
-
-                <strong style="${task.completed ? "text-decoration:line-through;color:#999;" : ""}">
-                    ${escapeHTML(task.text)}
-                </strong>
-
-                <span class="category">
-                    ${escapeHTML(task.category)}
-                </span>
-
-            </div>
-
-            <button
-                class="delete-btn"
-                onclick="deleteRoutine(${task.id})"
-            >
-                ×
-            </button>
-
-        `;
-
-        list.appendChild(item);
-
-
-        const homeItem = item.cloneNode(true);
-
-        homeItem.querySelector("input").setAttribute(
-            "onchange",
-            `toggleRoutine(${task.id})`
-        );
-
-        homeItem.querySelector(".delete-btn").remove();
-
-        homeList.appendChild(homeItem);
-
-    });
-
+function toggleRoutine(id){
+  const state=getTodayState();
+  state[id]=!state[id];
+  saveCurrent();
+  renderAll();
 }
 
+function deleteRoutine(id){
+  if(!confirm("Delete this routine?"))return;
+  currentUser.routines=currentUser.routines.filter(r=>r.id!==id);
+  saveCurrent();
+  renderAll();
+}
 
-function toggleRoutine(id) {
+function routineHTML(){
+  const state=getTodayState();
 
-    const user = getCurrentUser();
+  if(currentUser.routines.length===0){
+    return `<p style="color:#777">No routines yet. Add one above.</p>`;
+  }
 
-    const task = user.routine.find(
-        item => item.id === id
+  return currentUser.routines.map(r=>{
+    const done=!!state[r.id];
+    return `
+      <div class="routine">
+        <button class="check ${done?"done":""}" onclick="toggleRoutine(${r.id})">
+          ${done?"✓":""}
+        </button>
+        <div class="routine-info">
+          <strong>${escapeHTML(r.name)}</strong>
+          <small>${done?"Completed today":"Not completed yet"}</small>
+        </div>
+        <button class="delete" onclick="deleteRoutine(${r.id})">🗑</button>
+      </div>`;
+  }).join("");
+}
+
+function calculateToday(){
+  const state=getTodayState();
+  const total=currentUser.routines.length;
+  const completed=currentUser.routines.filter(r=>state[r.id]).length;
+  const percent=total?Math.round(completed/total*100):0;
+  return {total,completed,percent};
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderHome(){
+  const d=calculateToday();
+
+  document.getElementById("welcome").textContent=
+    "Welcome back, "+currentUser.username+" 👋";
+
+  document.getElementById("statCompleted").textContent=d.completed;
+  document.getElementById("statTotal").textContent=d.total;
+  document.getElementById("statPercent").textContent=d.percent+"%";
+  document.getElementById("homePercent").textContent=d.percent+"%";
+  document.getElementById("homeProgress").style.width=d.percent+"%";
+  document.getElementById("homeRoutine").innerHTML=routineHTML();
+  document.getElementById("statStreak").textContent=calculateStreak();
+}
+
+function calculateStreak(){
+  let streak=0;
+  const date=new Date();
+
+  while(true){
+    const key=date.toISOString().slice(0,10);
+    const state=currentUser.history[key];
+
+    if(!state){
+      if(streak===0)date.setDate(date.getDate()-1);
+      else break;
+    }
+
+    const total=currentUser.routines.length;
+    const completed=total && currentUser.routines.every(r=>state && state[r.id]);
+
+    if(completed){
+      streak++;
+      date.setDate(date.getDate()-1);
+    }else break;
+  }
+
+  return streak;
+}
+
+/* =========================
+   CALENDAR
+========================= */
+
+function changeMonth(amount){
+  calendarDate.setMonth(calendarDate.getMonth()+amount);
+  renderCalendar();
+}
+
+function renderCalendar(){
+  const grid=document.getElementById("calendarGrid");
+  const year=calendarDate.getFullYear();
+  const month=calendarDate.getMonth();
+
+  document.getElementById("monthTitle").textContent=
+    new Intl.DateTimeFormat("en",{month:"long",year:"numeric"}).format(calendarDate);
+
+  const names=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  grid.innerHTML=names.map(n=>`<div class="day-name">${n}</div>`).join("");
+
+  const first=new Date(year,month,1).getDay();
+  const days=new Date(year,month+1,0).getDate();
+
+  for(let i=0;i<first;i++){
+    grid.innerHTML+=`<div></div>`;
+  }
+
+  for(let day=1;day<=days;day++){
+    const key=
+      year+"-"+String(month+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+
+    const state=currentUser.history[key]||{};
+    const total=currentUser.routines.length;
+    const completed=total && currentUser.routines.every(r=>state[r.id]);
+    const today=key===getToday();
+
+    grid.innerHTML+=`
+      <div class="day ${today?"today":""} ${completed?"completed":""}">
+        <div class="day-num">${day}</div>
+        ${completed?'<div class="day-dot"></div>':""}
+      </div>`;
+  }
+}
+
+/* =========================
+   PROGRESS GRAPH
+========================= */
+
+function completionForDate(key){
+  const state=currentUser.history[key]||{};
+  const total=currentUser.routines.length;
+  if(!total)return 0;
+  return Math.round(
+    currentUser.routines.filter(r=>state[r.id]).length/total*100
+  );
+}
+
+function drawChart(){
+  const canvas=document.getElementById("progressChart");
+  if(!canvas)return;
+
+  const ctx=canvas.getContext("2d");
+  const w=canvas.width;
+  const h=canvas.height;
+
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#0c0c0c";
+  ctx.fillRect(0,0,w,h);
+
+  const values=[];
+  const labels=[];
+
+  for(let i=13;i>=0;i--){
+    const d=new Date();
+    d.setDate(d.getDate()-i);
+    const key=d.toISOString().slice(0,10);
+    values.push(completionForDate(key));
+    labels.push(
+      d.toLocaleDateString("en",{day:"numeric",month:"short"})
     );
+  }
 
-    if (!task) return;
+  const left=48,right=20,top=25,bottom=45;
+  const cw=w-left-right;
+  const ch=h-top-bottom;
 
-    task.completed = !task.completed;
+  ctx.strokeStyle="#252525";
+  ctx.lineWidth=1;
 
-    updateCurrentUser(user);
+  for(let i=0;i<=4;i++){
+    const y=top+ch-(ch*i/4);
+    ctx.beginPath();
+    ctx.moveTo(left,y);
+    ctx.lineTo(w-right,y);
+    ctx.stroke();
 
-    renderRoutine();
+    ctx.fillStyle="#777";
+    ctx.font="11px system-ui";
+    ctx.fillText((i*25)+"%",8,y+4);
+  }
 
-    updateStats();
+  if(values.length>1){
+    ctx.beginPath();
 
-}
+    values.forEach((v,i)=>{
+      const x=left+(cw*i/(values.length-1));
+      const y=top+ch-(v/100*ch);
 
-
-function deleteRoutine(id) {
-
-    const user = getCurrentUser();
-
-    user.routine =
-        user.routine.filter(
-            task => task.id !== id
-        );
-
-    updateCurrentUser(user);
-
-    renderRoutine();
-
-    updateStats();
-
-}
-
-
-function updateStats() {
-
-    const user = getCurrentUser();
-
-    if (!user) return;
-
-    const routine = user.routine || [];
-
-    const total = routine.length;
-
-    const completed =
-        routine.filter(task => task.completed).length;
-
-    const remaining =
-        total - completed;
-
-    const percent =
-        total === 0
-            ? 0
-            : Math.round((completed / total) * 100);
-
-    document.getElementById("totalTasks").textContent = total;
-    document.getElementById("completedTasks").textContent = completed;
-    document.getElementById("remainingTasks").textContent = remaining;
-    document.getElementById("progressPercent").textContent = percent + "%";
-
-}
-
-
-/* ==========================================
-   CHARACTERS
-========================================== */
-
-function renderCharacters() {
-
-    const user = getCurrentUser();
-
-    const grid =
-        document.getElementById("characterGrid");
-
-    grid.innerHTML = "";
-
-    characters.forEach((character, index) => {
-
-        const card =
-            document.createElement("div");
-
-        const selected =
-            user.character &&
-            user.character.name === character.name;
-
-        card.className =
-            "character-card" +
-            (selected ? " selected" : "");
-
-        card.innerHTML = `
-
-            <img
-                src="${character.image}"
-                alt="${escapeHTML(character.name)}"
-            >
-
-            <strong>
-                ${escapeHTML(character.name)}
-            </strong>
-
-        `;
-
-        card.onclick = () => selectCharacter(index);
-
-        grid.appendChild(card);
-
+      if(i===0)ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
     });
 
-}
+    ctx.strokeStyle="#9b7cff";
+    ctx.lineWidth=3;
+    ctx.stroke();
 
+    values.forEach((v,i)=>{
+      const x=left+(cw*i/(values.length-1));
+      const y=top+ch-(v/100*ch);
 
-function selectCharacter(index) {
+      ctx.beginPath();
+      ctx.arc(x,y,4,0,Math.PI*2);
+      ctx.fillStyle="#b49aff";
+      ctx.fill();
 
-    const user = getCurrentUser();
-
-    user.character = characters[index];
-
-    updateCurrentUser(user);
-
-    updateUserInterface();
-
-    alert(
-        `${characters[index].name} selected as your profile character!`
-    );
-
-}
-
-
-/* ==========================================
-   FRIEND SYSTEM
-========================================== */
-
-function sendFriendRequest() {
-
-    const input =
-        document.getElementById("friendUsername");
-
-    const targetUsername =
-        input.value.trim();
-
-    if (!targetUsername) return;
-
-    const currentUser = getCurrentUser();
-
-    const users = getUsers();
-
-    const target = users.find(
-        user =>
-            user.username.toLowerCase() ===
-            targetUsername.toLowerCase()
-    );
-
-    if (!target) {
-        alert("User not found.");
-        return;
-    }
-
-    if (
-        target.username.toLowerCase() ===
-        currentUser.username.toLowerCase()
-    ) {
-        alert("You cannot add yourself.");
-        return;
-    }
-
-    if (
-        currentUser.friends.includes(target.username)
-    ) {
-        alert("You are already friends.");
-        return;
-    }
-
-    target.requests = target.requests || [];
-
-    if (
-        target.requests.some(
-            request =>
-                request.toLowerCase() ===
-                currentUser.username.toLowerCase()
-        )
-    ) {
-        alert("Request already sent.");
-        return;
-    }
-
-    target.requests.push(currentUser.username);
-
-    saveUsers(users);
-
-    input.value = "";
-
-    alert("Friend request sent!");
-
-    renderRequests();
-
-}
-
-
-function renderRequests() {
-
-    const user = getCurrentUser();
-
-    const list =
-        document.getElementById("requestList");
-
-    list.innerHTML = "";
-
-    if (!user.requests || user.requests.length === 0) {
-
-        list.innerHTML =
-            "<p>No pending requests.</p>";
-
-        return;
-    }
-
-    user.requests.forEach(username => {
-
-        const card =
-            document.createElement("div");
-
-        card.className = "request-card";
-
-        card.innerHTML = `
-
-            <div class="avatar">👤</div>
-
-            <strong>${escapeHTML(username)}</strong>
-
-            <div class="request-actions">
-
-                <button
-                    class="accept"
-                    onclick="acceptRequest('${escapeAttribute(username)}')"
-                >
-                    Accept
-                </button>
-
-                <button
-                    class="reject"
-                    onclick="rejectRequest('${escapeAttribute(username)}')"
-                >
-                    Reject
-                </button>
-
-            </div>
-
-        `;
-
-        list.appendChild(card);
-
+      if(i%2===0 || i===values.length-1){
+        ctx.fillStyle="#777";
+        ctx.font="10px system-ui";
+        ctx.fillText(labels[i],x-15,h-15);
+      }
     });
-
+  }
 }
 
+/* =========================
+   PROFILE / ANIME
+========================= */
 
-function acceptRequest(username) {
+function renderAnime(){
+  const grid=document.getElementById("animeGrid");
 
-    const users = getUsers();
+  grid.innerHTML=animeCharacters.map((a,i)=>{
+    const selected=currentUser.avatar===avatarURL(a[0]);
 
-    const currentUser = users.find(
-        user =>
-            user.username.toLowerCase() ===
-            getCurrentUser().username.toLowerCase()
-    );
-
-    const sender = users.find(
-        user =>
-            user.username.toLowerCase() ===
-            username.toLowerCase()
-    );
-
-    if (!sender) return;
-
-    currentUser.requests =
-        currentUser.requests.filter(
-            name =>
-                name.toLowerCase() !==
-                username.toLowerCase()
-        );
-
-    currentUser.friends =
-        currentUser.friends || [];
-
-    sender.friends =
-        sender.friends || [];
-
-    if (!currentUser.friends.includes(sender.username)) {
-        currentUser.friends.push(sender.username);
-    }
-
-    if (!sender.friends.includes(currentUser.username)) {
-        sender.friends.push(currentUser.username);
-    }
-
-    saveUsers(users);
-
-    renderFriends();
-    renderRequests();
-    renderChats();
-
+    return `
+      <div class="anime ${selected?"selected":""}"
+           onclick="chooseAnime('${escapeAttr(a[0])}')">
+        <img src="${avatarURL(a[0])}" alt="${escapeAttr(a[1])}">
+        <span>${escapeHTML(a[1])}</span>
+      </div>`;
+  }).join("");
 }
 
-
-function rejectRequest(username) {
-
-    const user = getCurrentUser();
-
-    user.requests =
-        user.requests.filter(
-            name =>
-                name.toLowerCase() !==
-                username.toLowerCase()
-        );
-
-    updateCurrentUser(user);
-
-    renderRequests();
-
+function chooseAnime(seed){
+  currentUser.avatar=avatarURL(seed);
+  saveCurrent();
+  renderAll();
 }
 
+function renderProfile(){
+  document.getElementById("profileAvatar").src=currentUser.avatar;
+  document.getElementById("profileName").textContent=currentUser.username;
+  document.getElementById("profileEmail").textContent=currentUser.email;
+  document.getElementById("topAvatar").src=currentUser.avatar;
+  renderAnime();
+}
 
-function renderFriends() {
+/* =========================
+   FRIEND REQUESTS
+========================= */
 
-    const user = getCurrentUser();
+function sendFriendRequest(){
+  const username=document.getElementById("friendSearch").value.trim();
+  const msg=document.getElementById("friendMessage");
+  const all=accounts();
 
-    const list =
-        document.getElementById("friendList");
+  if(!username){
+    msg.textContent="Enter a username.";return;
+  }
 
-    list.innerHTML = "";
+  if(username===currentUser.username){
+    msg.textContent="You cannot add yourself.";return;
+  }
 
-    if (!user.friends || user.friends.length === 0) {
+  if(!all[username]){
+    msg.textContent="User not found in this browser's local accounts.";
+    return;
+  }
 
-        list.innerHTML =
-            "<p>You don't have any friends yet.</p>";
+  if(currentUser.friends.includes(username)){
+    msg.textContent="You are already friends.";
+    return;
+  }
 
-        return;
-    }
+  if(currentUser.sentRequests.includes(username)){
+    msg.textContent="Request already sent.";
+    return;
+  }
 
-    user.friends.forEach(username => {
+  if(!all[username].requests.includes(currentUser.username)){
+    all[username].requests.push(currentUser.username);
+  }
 
-        const card =
-            document.createElement("div");
+  currentUser.sentRequests.push(username);
+  saveAccounts(all);
+  saveCurrent();
 
-        card.className = "friend-card";
+  document.getElementById("friendSearch").value="";
+  msg.textContent="Friend request sent.";
+}
 
-        card.innerHTML = `
+function openRequests(){
+  const incoming=currentUser.requests||[];
 
-            <div class="avatar">👤</div>
+  const html=incoming.length
+    ? incoming.map(u=>`
+      <div class="request">
+        <strong>${escapeHTML(u)}</strong>
+        <div class="request-actions">
+          <button class="primary" style="width:auto"
+            onclick="acceptRequest('${escapeAttr(u)}')">Accept</button>
+          <button class="secondary"
+            onclick="declineRequest('${escapeAttr(u)}')">Decline</button>
+        </div>
+      </div>`).join("")
+    : `<p style="color:#777">No pending requests.</p>`;
 
-            <div class="friend-info">
+  openModal("Friend Requests",html);
+}
 
-                <strong>${escapeHTML(username)}</strong>
+function acceptRequest(username){
+  const all=accounts();
 
-                <small>Friend</small>
+  currentUser.requests=
+    currentUser.requests.filter(x=>x!==username);
 
-            </div>
+  if(!currentUser.friends.includes(username))
+    currentUser.friends.push(username);
 
-            <button
-                class="small-btn"
-                onclick="openChat('${escapeAttribute(username)}')"
-            >
-                Chat
-            </button>
+  if(all[username]){
+    all[username].sentRequests=
+      all[username].sentRequests.filter(x=>x!==currentUser.username);
 
-        `;
+    if(!all[username].friends.includes(currentUser.username))
+      all[username].friends.push(currentUser.username);
+  }
 
-        list.appendChild(card);
+  saveAccounts(all);
+  saveCurrent();
+  closeModal();
+  renderFriends();
+}
 
+function declineRequest(username){
+  const all=accounts();
+
+  currentUser.requests=
+    currentUser.requests.filter(x=>x!==username);
+
+  if(all[username]){
+    all[username].sentRequests=
+      all[username].sentRequests.filter(x=>x!==currentUser.username);
+  }
+
+  saveAccounts(all);
+  saveCurrent();
+  closeModal();
+}
+
+function renderFriends(){
+  const all=accounts();
+  const box=document.getElementById("friendList");
+
+  if(!currentUser.friends.length){
+    box.innerHTML=`<p style="color:#777">No friends yet.</p>`;
+    return;
+  }
+
+  box.innerHTML=currentUser.friends.map(username=>{
+    const f=all[username];
+    if(!f)return"";
+
+    return `
+      <div class="friend">
+        <img src="${f.avatar}">
+        <div class="friend-info">
+          <strong>${escapeHTML(f.username)}</strong>
+          <small>Friend</small>
+        </div>
+        <button class="secondary"
+          onclick="openChat('${escapeAttr(f.username)}')">Message</button>
+      </div>`;
+  }).join("");
+}
+
+/* =========================
+   CHAT
+========================= */
+
+function openChat(username){
+  currentChat=username;
+  navigate("chat");
+  renderChat();
+}
+
+function chatKey(a,b){
+  return [a,b].sort().join("__");
+}
+
+function renderChat(){
+  const title=document.getElementById("chatTitle");
+  const messages=document.getElementById("messages");
+
+  if(!currentChat){
+    title.textContent="Select a friend";
+    messages.innerHTML=
+      `<p style="color:#777">Open a friend's profile and tap Message.</p>`;
+    return;
+  }
+
+  title.textContent="Chat with "+currentChat;
+
+  const key=chatKey(currentUser.username,currentChat);
+  const msgs=currentUser.messages[key]||[];
+
+  messages.innerHTML=msgs.map(m=>`
+    <div class="bubble ${m.from===currentUser.username?"me":""}">
+      ${escapeHTML(m.text)}
+    </div>
+  `).join("");
+
+  messages.scrollTop=messages.scrollHeight;
+}
+
+function sendMessage(){
+  if(!currentChat){
+    alert("Choose a friend first.");
+    return;
+  }
+
+  const input=document.getElementById("chatInput");
+  const text=input.value.trim();
+
+  if(!text)return;
+
+  const all=accounts();
+  const key=chatKey(currentUser.username,currentChat);
+
+  if(!currentUser.messages[key])currentUser.messages[key]=[];
+
+  currentUser.messages[key].push({
+    from:currentUser.username,
+    text,
+    time:Date.now()
+  });
+
+  if(all[currentChat]){
+    if(!all[currentChat].messages[key])
+      all[currentChat].messages[key]=[];
+
+    all[currentChat].messages[key].push({
+      from:currentUser.username,
+      text,
+      time:Date.now()
     });
+  }
 
+  saveAccounts(all);
+  saveCurrent();
+
+  input.value="";
+  renderChat();
 }
 
-
-/* ==========================================
-   MESSAGING
-========================================== */
-
-let selectedChat = null;
-
-
-function renderChats() {
-
-    const user = getCurrentUser();
-
-    const list =
-        document.getElementById("chatList");
-
-    list.innerHTML = "";
-
-    if (!user.friends || user.friends.length === 0) {
-
-        list.innerHTML =
-            "<p style='padding:15px;'>Add friends to start chatting.</p>";
-
-        return;
-    }
-
-    user.friends.forEach(username => {
-
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "chat-user" +
-            (selectedChat === username ? " selected" : "");
-
-        item.innerHTML = `
-
-            <div class="avatar">👤</div>
-
-            <strong>${escapeHTML(username)}</strong>
-
-        `;
-
-        item.onclick = () => openChat(username);
-
-        list.appendChild(item);
-
-    });
-
-}
-
-
-function openChat(username) {
-
-    selectedChat = username;
-
-    openSection("messages");
-
-    document.getElementById("chatHeader").textContent =
-        username;
-
-    renderChats();
-
-    renderMessages();
-
-}
-
-
-function getConversationKey(a, b) {
-
-    return [a.toLowerCase(), b.toLowerCase()]
-        .sort()
-        .join("::");
-
-}
-
-
-function renderMessages() {
-
-    const container =
-        document.getElementById("chatMessages");
-
-    container.innerHTML = "";
-
-    const user = getCurrentUser();
-
-    if (!selectedChat) {
-
-        container.innerHTML =
-            "<p>Select a friend to start chatting.</p>";
-
-        return;
-    }
-
-    const users = getUsers();
-
-    const key =
-        getConversationKey(
-            user.username,
-            selectedChat
-        );
-
-    let messages =
-        JSON.parse(
-            localStorage.getItem("dailyflow_messages_" + key) || "[]"
-        );
-
-    messages.forEach(message => {
-
-        const div =
-            document.createElement("div");
-
-        div.className =
-            "message" +
-            (
-                message.sender.toLowerCase() ===
-                user.username.toLowerCase()
-                    ? " mine"
-                    : ""
-            );
-
-        div.textContent = message.text;
-
-        container.appendChild(div);
-
-    });
-
-    container.scrollTop =
-        container.scrollHeight;
-
-}
-
-
-function sendMessage() {
-
-    const input =
-        document.getElementById("messageInput");
-
-    const text =
-        input.value.trim();
-
-    if (!text || !selectedChat) return;
-
-    const user = getCurrentUser();
-
-    const key =
-        getConversationKey(
-            user.username,
-            selectedChat
-        );
-
-    const storageKey =
-        "dailyflow_messages_" + key;
-
-    let messages =
-        JSON.parse(
-            localStorage.getItem(storageKey) || "[]"
-        );
-
-    messages.push({
-
-        sender: user.username,
-
-        receiver: selectedChat,
-
-        text: text,
-
-        time: Date.now()
-
-    });
-
-    localStorage.setItem(
-        storageKey,
-        JSON.stringify(messages)
-    );
-
-    input.value = "";
-
-    renderMessages();
-
-}
-
-
-/* ==========================================
+/* =========================
    ADD ACCOUNT
-========================================== */
+========================= */
 
-function addAccount() {
-
-    localStorage.removeItem(CURRENT_USER_KEY);
-
-    document.getElementById("app").classList.add("hidden");
-
-    document.getElementById("authPage").classList.remove("hidden");
-
-    showLogin();
-
+function openAddAccount(){
+  openModal("Add Account",`
+    <div class="field">
+      <label>Username</label>
+      <input id="newAccountUser">
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input id="newAccountEmail" type="email">
+    </div>
+    <div class="field">
+      <label>Date of birth</label>
+      <input id="newAccountDob" type="date">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="newAccountPass" type="password">
+    </div>
+    <button class="primary" onclick="createAdditionalAccount()">Create account</button>
+  `);
 }
 
+function createAdditionalAccount(){
+  const username=document.getElementById("newAccountUser").value.trim();
+  const email=document.getElementById("newAccountEmail").value.trim();
+  const dob=document.getElementById("newAccountDob").value;
+  const password=document.getElementById("newAccountPass").value;
 
-/* ==========================================
-   LOGOUT
-========================================== */
+  if(!username||!email||!dob||!password){
+    alert("Fill in all fields.");
+    return;
+  }
 
-function logout() {
+  const all=accounts();
 
-    localStorage.removeItem(CURRENT_USER_KEY);
+  if(all[username]){
+    alert("That username already exists.");
+    return;
+  }
 
-    document.getElementById("app").classList.add("hidden");
+  all[username]=emptyUser(username,email,dob,password);
+  saveAccounts(all);
 
-    document.getElementById("authPage").classList.remove("hidden");
-
-    document.getElementById("loginPassword").value = "";
-
-    showLogin();
-
+  alert("Account created. You can log into it from the login screen.");
+  closeModal();
 }
 
+/* =========================
+   RESET ROUTINE DATA
+========================= */
 
-/* ==========================================
-   SECURITY / HTML HELPERS
-========================================== */
+function clearUserData(){
+  if(!confirm("Reset your routine history and today's completion data?"))return;
 
-function escapeHTML(value) {
-
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-
+  currentUser.history={};
+  saveCurrent();
+  renderAll();
+  alert("Routine data has been reset.");
 }
 
+/* =========================
+   MODAL
+========================= */
 
-function escapeAttribute(value) {
-
-    return String(value)
-        .replace(/\\/g, "\\\\")
-        .replace(/'/g, "\\'");
+function openModal(title,content){
+  document.getElementById("modalTitle").textContent=title;
+  document.getElementById("modalContent").innerHTML=content;
+  document.getElementById("modal").classList.remove("hidden");
 }
 
+function closeModal(){
+  document.getElementById("modal").classList.add("hidden");
+}
 
-/* ==========================================
-   AUTO LOGIN
-========================================== */
+/* =========================
+   HELPERS
+========================= */
 
-window.addEventListener("load", () => {
+function escapeHTML(text){
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
 
-    const current =
-        localStorage.getItem(CURRENT_USER_KEY);
+function escapeAttr(text){
+  return escapeHTML(text).replace(/`/g,"&#096;");
+}
 
-    if (current && getCurrentUser()) {
+function calculateOverall(){
+  let total=0;
+  let done=0;
 
-        openApp();
+  Object.keys(currentUser.history).forEach(date=>{
+    const state=currentUser.history[date];
 
-    } else {
+    currentUser.routines.forEach(r=>{
+      total++;
+      if(state[r.id])done++;
+    });
+  });
 
-        showLogin();
+  return total?Math.round(done/total*100):0;
+}
 
-    }
+function renderProgress(){
+  const p=calculateOverall();
+  document.getElementById("overallPercent").textContent=p+"%";
+  document.getElementById("overallProgress").style.width=p+"%";
+}
 
+function renderAll(){
+  if(!currentUser)return;
+
+  renderHome();
+  document.getElementById("routineList").innerHTML=routineHTML();
+  renderCalendar();
+  renderProgress();
+  renderProfile();
+  renderFriends();
+  renderChat();
+  drawChart();
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+loadUser();
+
+if(currentUser){
+  startApp();
+}else{
+  document.getElementById("authScreen").style.display="flex";
+}
+
+window.addEventListener("resize",()=>{
+  if(currentUser && document.getElementById("progress").classList.contains("active")){
+    drawChart();
+  }
 });
-
 </script>
 
 </body>
