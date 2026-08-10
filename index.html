@@ -1,2073 +1,2709 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PulseTrack - Anime Habit Tracker</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DailyFlow</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6fb;
+    color: #171923;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =========================
+   AUTH
+========================= */
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    padding: 30px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+
+.logo {
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.logo span {
+    color: #667eea;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 25px;
+}
+
+.auth-card h2 {
+    margin-bottom: 18px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #667eea;
+}
+
+.primary-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    background: #667eea;
+    color: white;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.primary-btn:hover {
+    background: #5568d9;
+}
+
+.secondary-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: #eee;
+    color: #222;
+    margin-top: 10px;
+}
+
+.text-btn {
+    background: none;
+    color: #667eea;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.password-wrap {
+    position: relative;
+}
+
+.password-wrap input {
+    padding-right: 55px;
+}
+
+.show-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    color: #667eea;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.error {
+    color: #e53e3e;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.success {
+    color: #16a34a;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app {
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 70px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+
+.brand {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.brand span {
+    color: #667eea;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.profile-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.layout {
+    display: flex;
+    min-height: calc(100vh - 70px);
+}
+
+.sidebar {
+    width: 240px;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    padding: 20px 12px;
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    background: transparent;
+    text-align: left;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: #eef0ff;
+    color: #596be0;
+}
+
+.content {
+    flex: 1;
+    padding: 25px;
+    max-width: 1200px;
+    margin: auto;
+    width: 100%;
+}
+
+.section {
+    display: none;
+}
+
+.section.active {
+    display: block;
+}
+
+.page-title {
+    font-size: 28px;
+    margin-bottom: 7px;
+}
+
+.page-subtitle {
+    color: #777;
+    margin-bottom: 22px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 18px;
+    border: 1px solid #eee;
+}
+
+.stat-card h3 {
+    font-size: 27px;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    color: #777;
+}
+
+.routine-card {
+    background: white;
+    padding: 22px;
+    border-radius: 20px;
+    border: 1px solid #eee;
+}
+
+.routine-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.add-routine {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.add-routine input,
+.add-routine select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+}
+
+.add-routine input {
+    flex: 1;
+}
+
+.small-btn {
+    padding: 11px 16px;
+    border-radius: 10px;
+    background: #667eea;
+    color: white;
+    font-weight: 700;
+}
+
+.routine-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.routine-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 14px;
+    background: #f8f9fd;
+    border-radius: 14px;
+}
+
+.routine-check {
+    width: 22px;
+    height: 22px;
+    accent-color: #667eea;
+}
+
+.routine-info {
+    flex: 1;
+}
+
+.routine-info strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.category {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #e8eaff;
+    color: #596be0;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.delete-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+}
+
+/* =========================
+   CHARACTERS
+========================= */
+
+.character-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+}
+
+.character-card {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 18px;
+    padding: 12px;
+    text-align: center;
+    transition: .2s;
+}
+
+.character-card:hover {
+    transform: translateY(-3px);
+}
+
+.character-card.selected {
+    border-color: #667eea;
+    background: #f1f2ff;
+}
+
+.character-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 8px;
+}
+
+.character-card strong {
+    font-size: 13px;
+}
+
+/* =========================
+   FRIENDS
+========================= */
+
+.friend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.friend-card {
+    background: white;
+    padding: 18px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.friend-card .avatar {
+    width: 52px;
+    height: 52px;
+}
+
+.friend-info {
+    flex: 1;
+}
+
+.friend-info strong {
+    display: block;
+}
+
+.friend-info small {
+    color: #777;
+}
+
+.request-card {
+    background: white;
+    padding: 16px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.request-actions {
+    margin-left: auto;
+    display: flex;
+    gap: 7px;
+}
+
+.accept {
+    background: #16a34a;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.reject {
+    background: #eee;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+/* =========================
+   MESSAGES
+========================= */
+
+.messages-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: 650px;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.chat-list {
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+}
+
+.chat-user {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.chat-user:hover,
+.chat-user.selected {
+    background: #f1f2ff;
+}
+
+.chat-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 18px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.message {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 16px;
+    background: #eee;
+    align-self: flex-start;
+}
+
+.message.mine {
+    background: #667eea;
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-input {
+    display: flex;
+    padding: 12px;
+    border-top: 1px solid #eee;
+    gap: 8px;
+}
+
+.chat-input input {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    max-width: 650px;
+}
+
+.profile-main {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.profile-main .avatar {
+    width: 90px;
+    height: 90px;
+    font-size: 50px;
+}
+
+.profile-details p {
+    color: #777;
+    margin-top: 5px;
+}
+
+.account-box {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+.danger-btn {
+    background: #fee2e2;
+    color: #dc2626;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+}
+
+.modal-card {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    background: #eee;
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 900px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    body {
-      background-color: #0b0d12;
-      color: #e0e6ed;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+    .character-grid {
+        grid-template-columns: repeat(4, 1fr);
     }
 
-    .card {
-      background: #141720;
-      padding: 30px;
-      border-radius: 20px;
-      width: 100%;
-      max-width: 900px;
-      border: 1px solid rgba(56, 189, 248, 0.2);
-      box-shadow: 0 0 35px rgba(56, 189, 248, 0.1), 0 10px 30px rgba(0, 0, 0, 0.8);
-      position: relative;
+    .friend-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 700px) {
+    .sidebar {
+        width: 70px;
+        padding: 12px 8px;
     }
 
-    .auth-card { max-width: 420px; }
-
-    .brand-header { text-align: center; margin-bottom: 25px; }
-
-    .brand-header h1 {
-      font-size: 32px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #38bdf8, #818cf8, #4ade80);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 6px;
-      letter-spacing: -0.5px;
+    .nav-btn {
+        text-align: center;
+        font-size: 0;
     }
 
-    .brand-header p { font-size: 13px; color: #94a3b8; }
-
-    .form-group { margin-bottom: 18px; }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #cbd5e1;
-      font-size: 14px;
-      font-weight: 600;
+    .nav-btn::first-letter {
+        font-size: 20px;
     }
 
-    .form-group input {
-      width: 100%;
-      padding: 12px 14px;
-      background-color: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      color: #f8fafc;
-      font-size: 15px;
-      outline: none;
+    .content {
+        padding: 15px;
     }
 
-    .password-wrapper { position: relative; display: flex; align-items: center; }
-    .password-wrapper input { padding-right: 45px; }
-
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .toggle-password svg { width: 20px; height: 20px; stroke: currentColor; }
-
-    .btn-primary {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, #0ea5e9, #10b981);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 5px;
+    .character-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .btn-biometric {
-      width: 100%;
-      padding: 11px;
-      background: #1e293b;
-      color: #38bdf8;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+    .friend-grid {
+        grid-template-columns: 1fr;
     }
 
-    .btn-biometric:hover { background: #334155; color: #fff; }
-
-    .forgot-link {
-      display: block;
-      text-align: right;
-      font-size: 12px;
-      color: #f43f5e;
-      cursor: pointer;
-      margin-top: 8px;
-      font-weight: 600;
-      text-decoration: underline;
+    .messages-layout {
+        grid-template-columns: 90px 1fr;
     }
 
-    .switch-mode-text { margin-top: 20px; text-align: center; font-size: 14px; color: #94a3b8; }
-    .switch-mode-text button {
-      background: none;
-      border: none;
-      color: #38bdf8;
-      font-weight: 600;
-      cursor: pointer;
-      margin-left: 4px;
-      text-decoration: underline;
+    .chat-user span,
+    .chat-user strong {
+        display: none;
     }
 
-    #dashboardScreen { display: none; }
+    .add-routine {
+        flex-direction: column;
+    }
+}
 
-    .dashboard-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #1e293b;
+@media(max-width: 450px) {
+    .stats {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .welcome-text h2 { font-size: 20px; color: #f8fafc; }
-    .welcome-text p { font-size: 12px; color: #10b981; font-weight: 600; }
-
-    .avatar-btn {
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      border: 2px solid #38bdf8;
-      cursor: pointer;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #0b0d12;
-      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-      transition: transform 0.2s, border-color 0.2s;
+    .character-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
-    .avatar-btn:hover { transform: scale(1.08); border-color: #4ade80; }
-
-    .category-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 20px; }
-    .tab-btn {
-      background: #0b0d12;
-      border: 1px solid #1e293b;
-      color: #94a3b8;
-      padding: 8px 14px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-    .tab-btn.active {
-      background: linear-gradient(135deg, #0ea5e9, #6366f1);
-      color: #fff;
-      border-color: transparent;
+    .topbar {
+        padding: 0 12px;
     }
 
-    .week-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #0b0d12;
-      padding: 12px 18px;
-      border-radius: 12px;
-      margin-bottom: 20px;
-      border: 1px solid #1e293b;
+    .brand {
+        font-size: 20px;
     }
-
-    .week-nav button {
-      background: #1e293b;
-      color: #38bdf8;
-      border: 1px solid #334155;
-      padding: 8px 14px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .week-title { font-size: 15px; font-weight: 700; color: #f8fafc; }
-
-    .add-habit-box { display: flex; gap: 10px; margin-bottom: 20px; }
-    .add-habit-box input {
-      flex: 1;
-      padding: 12px;
-      background: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      color: #fff;
-      outline: none;
-    }
-
-    .add-habit-box select {
-      padding: 12px;
-      background: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 10px;
-      color: #38bdf8;
-      outline: none;
-      font-weight: 600;
-    }
-
-    .add-habit-box button {
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #38bdf8, #4ade80);
-      color: #0b0d12;
-      border: none;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .table-container { overflow-x: auto; margin-bottom: 30px; }
-    table { width: 100%; border-collapse: collapse; text-align: center; min-width: 650px; }
-    th, td { padding: 12px 8px; border-bottom: 1px solid #1e293b; vertical-align: middle; }
-    th { font-size: 13px; color: #94a3b8; font-weight: 600; }
-    th .date-sub { display: block; font-size: 11px; color: #38bdf8; margin-top: 2px; }
-
-    td.habit-name { text-align: left; font-weight: 600; color: #f8fafc; width: 25%; }
-    .badge-cat { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 6px; margin-top: 4px; font-weight: 700; }
-    .streak-badge { display: inline-block; background: #1e293b; color: #f59e0b; font-weight: 700; font-size: 12px; padding: 4px 8px; border-radius: 12px; border: 1px solid #334155; }
-
-    td input[type="checkbox"] { width: 22px; height: 22px; accent-color: #10b981; cursor: pointer; }
-    
-    .status-check { color: #10b981; font-size: 18px; font-weight: bold; }
-    .status-missed { color: #ef4444; font-size: 18px; font-weight: bold; }
-
-    .btn-delete { background: none; border: none; color: #ef4444; font-size: 16px; cursor: pointer; }
-
-    .graph-section { background: #0b0d12; padding: 20px; border-radius: 14px; border: 1px solid #1e293b; margin-bottom: 20px; }
-    .graph-section h3 { font-size: 16px; color: #f8fafc; margin-bottom: 15px; text-align: center; }
-    .canvas-container { width: 100%; height: 220px; position: relative; }
-    canvas { width: 100%; height: 100%; }
-
-    .monthly-section {
-      background: #0b0d12;
-      padding: 20px;
-      border-radius: 14px;
-      border: 1px solid #1e293b;
-    }
-    .monthly-section h3 {
-      font-size: 16px;
-      color: #f8fafc;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    .monthly-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 12px;
-      margin-bottom: 15px;
-    }
-    .monthly-stat-card {
-      background: #141720;
-      border: 1px solid #334155;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    .monthly-stat-card .num {
-      font-size: 20px;
-      font-weight: 800;
-      color: #38bdf8;
-    }
-    .monthly-stat-card .lbl {
-      font-size: 11px;
-      color: #94a3b8;
-      margin-top: 4px;
-    }
-
-    .progress-bar-container {
-      background: #1e293b;
-      height: 14px;
-      border-radius: 7px;
-      overflow: hidden;
-      margin-bottom: 15px;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #10b981);
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-
-    .monthly-habit-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 12px;
-      background: #141720;
-      border-radius: 8px;
-      margin-bottom: 6px;
-      font-size: 13px;
-    }
-
-    .drawer-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(5px);
-      display: none;
-      justify-content: flex-end;
-      z-index: 999;
-    }
-
-    .drawer-content {
-      width: 100%;
-      max-width: 420px;
-      background: #141720;
-      height: 100%;
-      border-left: 1px solid #1e293b;
-      padding: 25px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: -10px 0 30px rgba(0,0,0,0.8);
-      animation: slideRightIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow-y: auto;
-    }
-
-    @keyframes slideRightIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-
-    .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .drawer-close { background: none; border: none; color: #94a3b8; font-size: 24px; cursor: pointer; }
-
-    .drawer-subnav { display: flex; gap: 10px; margin-bottom: 15px; }
-    .drawer-subnav button {
-      flex: 1;
-      padding: 8px;
-      background: #0b0d12;
-      border: 1px solid #1e293b;
-      color: #94a3b8;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .drawer-subnav button.active { background: #38bdf8; color: #0b0d12; border-color: transparent; }
-
-    .multi-account-box {
-      background: #0b0d12;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 15px;
-    }
-
-    .multi-account-box h4 {
-      font-size: 12px;
-      color: #38bdf8;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-    }
-
-    .account-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px;
-      background: #141720;
-      border-radius: 8px;
-      margin-bottom: 6px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .account-item.active { border: 1px solid #10b981; }
-
-    .btn-add-account {
-      width: 100%;
-      padding: 8px;
-      background: #1e293b;
-      color: #4ade80;
-      border: 1px dashed #4ade80;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      margin-top: 4px;
-    }
-
-    .avatar-customize-box {
-      background: #0b0d12;
-      padding: 18px;
-      border-radius: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-      border: 1px solid #1e293b;
-    }
-
-    .avatar-preview-lg {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      margin: 0 auto 12px;
-      border: 2px solid #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #1e293b;
-      overflow: hidden;
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-    }
-
-    .avatar-preview-lg img { width: 100%; height: 100%; object-fit: cover; }
-
-    .btn-edit-avatar {
-      background: linear-gradient(135deg, #38bdf8, #818cf8);
-      color: #0b0d12;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      margin-top: 5px;
-    }
-
-    .hidden-pass-toggle {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 15px;
-      margin-bottom: 8px;
-    }
-
-    .hidden-pass-box {
-      background: #0b0d12;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 12px;
-      display: none;
-      margin-bottom: 15px;
-    }
-
-    .hidden-pass-box input {
-      width: 100%;
-      padding: 8px 10px;
-      background: #141720;
-      border: 1px solid #334155;
-      border-radius: 6px;
-      color: #fff;
-      font-size: 12px;
-      margin-bottom: 8px;
-      outline: none;
-    }
-
-    .anime-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-height: 250px;
-      overflow-y: auto;
-      padding: 8px;
-      background: #0b0d12;
-      border-radius: 12px;
-      border: 1px solid #1e293b;
-      margin-top: 10px;
-    }
-
-    .anime-card {
-      width: 100%;
-      aspect-ratio: 1;
-      border-radius: 50%;
-      border: 2px solid #334155;
-      cursor: pointer;
-      overflow: hidden;
-      transition: all 0.2s;
-    }
-
-    .anime-card img { width: 100%; height: 100%; object-fit: cover; }
-    .anime-card:hover { border-color: #38bdf8; transform: scale(1.1); box-shadow: 0 0 12px rgba(56, 189, 248, 0.6); }
-
-    .friends-search-box { margin-bottom: 15px; }
-    .friends-search-box input {
-      width: 100%;
-      padding: 10px 12px;
-      background: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 8px;
-      color: #fff;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .requests-section-title { font-size: 12px; color: #38bdf8; font-weight: 700; margin: 15px 0 8px 0; text-transform: uppercase; }
-
-    .online-badge {
-      display: inline-block;
-      background: #10b981;
-      color: #0b0d12;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 10px;
-      margin-left: 6px;
-    }
-
-    .new-member-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #f59e0b, #ef4444);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 10px;
-      margin-left: 6px;
-    }
-
-    .friend-card {
-      background: #0b0d12;
-      border: 1px solid #1e293b;
-      border-radius: 10px;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .friend-card:hover { background: #141720; }
-
-    .friend-info-left { display: flex; align-items: center; gap: 10px; }
-    .friend-avatar-sm { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #38bdf8; }
-    .friend-info h4 { font-size: 13px; color: #f8fafc; }
-    .friend-info p { font-size: 11px; color: #10b981; font-weight: 600; }
-
-    .btn-req-action { border: none; padding: 6px 12px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer; }
-    .btn-send-req { background: #38bdf8; color: #0b0d12; }
-    .btn-pending { background: #334155; color: #94a3b8; cursor: not-allowed; }
-    .btn-accept { background: #10b981; color: #fff; margin-right: 4px; }
-    .btn-reject { background: #ef4444; color: #fff; }
-    .btn-chat { background: #6366f1; color: #fff; }
-
-    .profile-view-card {
-      background: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 15px;
-      display: none;
-      text-align: center;
-    }
-
-    .profile-view-avatar {
-      width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; margin: 0 auto 8px;
-    }
-
-    .chat-container {
-      background: #0b0d12;
-      border: 1px solid #334155;
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .chat-header { display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 10px; font-weight: 700; color: #38bdf8; font-size: 13px; }
-    .chat-messages { height: 170px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-    .chat-msg { padding: 6px 10px; border-radius: 8px; font-size: 12px; max-width: 80%; width: fit-content; }
-    .chat-msg.me { background: #0ea5e9; color: #fff; align-self: flex-end; }
-    .chat-msg.them { background: #1e293b; color: #e0e6ed; align-self: flex-start; }
-    .chat-msg img { max-width: 180px; border-radius: 8px; margin-top: 4px; display: block; }
-    
-    .chat-input-box { display: flex; gap: 6px; align-items: center; }
-    .chat-input-box input[type="text"] { flex: 1; padding: 8px; background: #141720; border: 1px solid #334155; border-radius: 6px; color: #fff; font-size: 12px; outline: none; }
-    .chat-input-box button { padding: 8px 12px; background: #10b981; border: none; color: #fff; font-weight: 700; border-radius: 6px; cursor: pointer; font-size: 12px; }
-    .btn-photo-attach { background: #38bdf8 !important; }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(4px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .modal-card {
-      background: #141720;
-      border: 1px solid #38bdf8;
-      border-radius: 16px;
-      padding: 24px;
-      width: 90%;
-      max-width: 380px;
-    }
-
-    .profile-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; }
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: #0b0d12;
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: #cbd5e1;
-      font-size: 13px;
-      font-weight: 600;
-      border: 1px solid #1e293b;
-    }
-    .menu-item span { font-size: 16px; }
-    .menu-item .val { margin-left: auto; color: #38bdf8; }
-
-    .btn-drawer-logout {
-      background: #e11d48;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 15px;
-    }
-
-    .btn-delete-account {
-      background: transparent;
-      color: #f43f5e;
-      border: 1px solid #f43f5e;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 12px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 8px;
-    }
-
-    .btn-delete-account:hover {
-      background: #f43f5e;
-      color: #ffffff;
-    }
-
-    .error-msg { color: #fca5a5; font-size: 13px; margin-top: 10px; text-align: center; display: none; }
-    .success-msg { color: #86efac; font-size: 13px; margin-top: 10px; text-align: center; display: none; }
-  </style>
+}
+</style>
 </head>
+
 <body>
 
-  <!-- AUTH CARD -->
-  <div id="authScreen" class="card auth-card">
-    <div class="brand-header">
-      <h1>PulseTrack</h1>
-      <p id="subTitle">Level up your life & track daily habits</p>
-    </div>
+<!-- =========================
+     AUTH PAGE
+========================= -->
 
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" id="username" placeholder="Enter your username" />
-    </div>
+<div id="authPage" class="auth-page">
 
-    <div class="form-group" id="dobGroup" style="display:none;">
-      <label for="dobInput">Date of Birth</label>
-      <input type="date" id="dobInput" />
-    </div>
+    <div class="auth-card">
 
-    <div class="form-group">
-      <label for="password">Password</label>
-      <div class="password-wrapper">
-        <input type="password" id="password" placeholder="Enter your password" />
-        <button type="button" id="togglePassword" class="toggle-password">
-          <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
-        </button>
-      </div>
-      <span id="forgotPasswordBtn" class="forgot-link" style="display:none;" onclick="openResetModal()">Forgot Password?</span>
-    </div>
+        <div class="logo">Daily<span>Flow</span></div>
+        <p class="subtitle">Build your day. Build yourself.</p>
 
-    <div id="errorMsg" class="error-msg"></div>
-    <div id="successMsg" class="success-msg"></div>
+        <!-- LOGIN -->
 
-    <button type="button" id="submitBtn" class="btn-primary" onclick="handleAuth()">Sign In</button>
+        <div id="loginForm">
 
-    <button type="button" id="biometricBtn" class="btn-biometric" onclick="handleBiometricLogin()">
-      👆 Quick Sign-In (Fingerprint/Face ID)
-    </button>
+            <h2>Welcome Back 👋</h2>
 
-    <div class="switch-mode-text">
-      <span id="promptText">Don't have an account?</span>
-      <button type="button" id="switchBtn" onclick="toggleMode()">Sign Up</button>
-    </div>
-  </div>
-
-  <!-- FORGOT PASSWORD / DOB RESET MODAL -->
-  <div id="resetModal" class="modal-overlay">
-    <div class="modal-card">
-      <h3 style="color:#38bdf8; margin-bottom:12px; text-align:center;">Reset Password</h3>
-      <p style="font-size:12px; color:#94a3b8; margin-bottom:15px; text-align:center;">
-        Enter your Username and Date of Birth to set a new password.
-      </p>
-
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" id="resetUsername" placeholder="Your username" />
-      </div>
-
-      <div class="form-group">
-        <label>Date of Birth</label>
-        <input type="date" id="resetDob" />
-      </div>
-
-      <div class="form-group">
-        <label>New Password</label>
-        <input type="password" id="resetNewPass" placeholder="Enter new password" />
-      </div>
-
-      <div id="modalError" class="error-msg"></div>
-
-      <button class="btn-primary" onclick="processPasswordReset()">Reset Password</button>
-      <button class="btn-biometric" style="margin-top:8px;" onclick="closeResetModal()">Cancel</button>
-    </div>
-  </div>
-
-  <!-- DASHBOARD CARD -->
-  <div id="dashboardScreen" class="card">
-    <div class="dashboard-header">
-      <div class="welcome-text">
-        <h2>Hi, <span id="displayUsername" style="color:#38bdf8;">User</span>!</h2>
-        <p>🔥 "Small steps every day bring big results!"</p>
-      </div>
-      <button class="avatar-btn" onclick="toggleDrawer(true)" id="headerAvatarBtn" title="Open Profile Menu"></button>
-    </div>
-
-    <div class="category-tabs">
-      <button class="tab-btn active" onclick="filterCategory('All')">🌟 All Goals</button>
-      <button class="tab-btn" onclick="filterCategory('Fitness')">💪 Fitness</button>
-      <button class="tab-btn" onclick="filterCategory('Reading')">📚 Reading</button>
-      <button class="tab-btn" onclick="filterCategory('Skills')">🚀 Skills</button>
-      <button class="tab-btn" onclick="filterCategory('Meditation')">🧘 Meditation</button>
-      <button class="tab-btn" onclick="filterCategory('Academics')">🎓 Academics</button>
-    </div>
-
-    <div class="week-nav">
-      <button onclick="changeWeek(-1)">← Prev Week</button>
-      <div class="week-title" id="weekTitleDisplay">Loading...</div>
-      <button onclick="changeWeek(1)">Next Week →</button>
-    </div>
-
-    <div class="add-habit-box">
-      <input type="text" id="habitInput" placeholder="Add a habit (e.g. Coding, Gym, Math Revision)..." oninput="autoClassifyGoal()" />
-      <select id="habitCategory">
-        <option value="Fitness">Fitness</option>
-        <option value="Reading">Reading</option>
-        <option value="Skills">Skills</option>
-        <option value="Meditation">Meditation</option>
-        <option value="Academics">Academics</option>
-      </select>
-      <button onclick="addHabit()">Add</button>
-    </div>
-
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr id="tableHeaderRow">
-            <th style="text-align:left;">Habit</th>
-            <th>Streak</th>
-          </tr>
-        </thead>
-        <tbody id="habitTableBody"></tbody>
-      </table>
-      <p id="emptyText" style="text-align:center; color:#64748b; font-size:13px; margin-top:20px;">No habits found for this view!</p>
-    </div>
-
-    <div class="graph-section">
-      <h3>📈 Weekly Consistency</h3>
-      <div class="canvas-container">
-        <canvas id="lineChartCanvas"></canvas>
-      </div>
-    </div>
-
-    <!-- MONTHLY PROGRESS REPORT -->
-    <div class="monthly-section">
-      <h3>📊 Monthly Progress Overview (Past 30 Days)</h3>
-      <div class="monthly-stats-grid">
-        <div class="monthly-stat-card">
-          <div class="num" id="monthOverallRate">0%</div>
-          <div class="lbl">Completion Rate</div>
-        </div>
-        <div class="monthly-stat-card">
-          <div class="num" id="monthBestStreak">0d</div>
-          <div class="lbl">Best Current Streak</div>
-        </div>
-        <div class="monthly-stat-card">
-          <div class="num" id="monthTotalHabits">0</div>
-          <div class="lbl">Active Habits</div>
-        </div>
-      </div>
-
-      <p style="font-size:12px; color:#cbd5e1; margin-bottom:6px; font-weight:600;">Overall Month Goal Completion</p>
-      <div class="progress-bar-container">
-        <div id="monthlyProgressBar" class="progress-bar-fill"></div>
-      </div>
-
-      <div id="monthlyHabitBreakdown"></div>
-    </div>
-  </div>
-
-  <!-- PROFILE DRAWER -->
-  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)">
-    <div class="drawer-content" onclick="event.stopPropagation()">
-      <div>
-        <div class="drawer-header">
-          <h3 style="color:#f8fafc;">Profile & Settings</h3>
-          <button class="drawer-close" onclick="toggleDrawer(false)">✕</button>
-        </div>
-
-        <div class="drawer-subnav">
-          <button id="tabMyProfile" class="active" onclick="switchDrawerTab('profile')">My Profile</button>
-          <button id="tabFindFriends" onclick="switchDrawerTab('friends')">🔍 Discover & Friends</button>
-        </div>
-
-        <!-- TAB 1: Profile -->
-        <div id="drawerTabProfile">
-          <div class="multi-account-box">
-            <h4>👤 Switch Accounts</h4>
-            <div id="accountsListContainer"></div>
-            <button class="btn-add-account" onclick="addNewAccountScreen()">➕ Add Account</button>
-          </div>
-
-          <div class="avatar-customize-box">
-            <div class="avatar-preview-lg" id="drawerAvatarPreview"></div>
-            <p style="font-size:12px; color:#cbd5e1; font-weight: 600;">Edit Profile Picture</p>
-            <button class="btn-edit-avatar" onclick="toggleAvatarSelector()">✨ Choose Anime Character</button>
-
-            <div id="animeAvatarSelector" style="display:none;">
-              <p style="font-size:11px; color:#94a3b8; margin-top:10px;">Pick your favorite Anime Character:</p>
-              <div class="anime-grid" id="animeGrid"></div>
+            <div class="form-group">
+                <label>Username</label>
+                <input id="loginUsername" type="text" placeholder="Enter username">
             </div>
-          </div>
 
-          <button class="btn-biometric" onclick="registerBiometrics()" style="margin-bottom:15px;">
-            🔒 Register Touch ID / Face ID
-          </button>
+            <div class="form-group">
+                <label>Password</label>
 
-          <div class="profile-menu">
-            <div class="menu-item"><span>💪</span> Fitness <span class="val" id="countFitness">0</span></div>
-            <div class="menu-item"><span>📚</span> Reading <span class="val" id="countReading">0</span></div>
-            <div class="menu-item"><span>🚀</span> Skills <span class="val" id="countSkills">0</span></div>
-            <div class="menu-item"><span>🧘</span> Meditation <span class="val" id="countMeditation">0</span></div>
-            <div class="menu-item"><span>🎓</span> Academics <span class="val" id="countAcademics">0</span></div>
-          </div>
+                <div class="password-wrap">
+                    <input id="loginPassword" type="password" placeholder="Enter password">
+                    <button class="show-password" onclick="togglePassword('loginPassword', this)">
+                        Show
+                    </button>
+                </div>
 
-          <button class="hidden-pass-toggle" onclick="toggleHiddenPassBox()">
-            ⚙️ <span>Security Options / Change Password</span>
-          </button>
-          <div id="hiddenPassBox" class="hidden-pass-box">
-            <input type="password" id="oldPasswordInput" placeholder="Enter Current Password" />
-            <input type="password" id="newPasswordInput" placeholder="Enter New Password" />
-            <button class="btn-primary" style="padding:8px; font-size:12px;" onclick="changeAccountPassword()">Update Password</button>
-          </div>
+                <div id="loginError" class="error"></div>
+            </div>
+
+            <button class="primary-btn" onclick="login()">Login</button>
+
+            <button class="text-btn" onclick="showForgotPassword()">
+                Forgot Password?
+            </button>
+
+            <button class="secondary-btn" onclick="showSignup()">
+                Create New Account
+            </button>
+
         </div>
 
-        <!-- TAB 2: Discovery, Friends & Messaging -->
-        <div id="drawerTabFriends" style="display:none;">
-          <div class="friends-search-box">
-            <input type="text" id="friendSearchInput" placeholder="Search registered accounts..." oninput="renderFriendsTab()" />
-          </div>
+        <!-- SIGNUP -->
 
-          <div id="incomingRequestsContainer"></div>
-          <div id="friendsListContainer"></div>
+        <div id="signupForm" class="hidden">
 
-          <div id="profileViewCard" class="profile-view-card">
-            <img id="pvAvatar" class="profile-view-avatar" src="" />
-            <h3 id="pvUsername" style="color:#f8fafc; font-size:15px; margin-bottom:4px;"></h3>
-            <p id="pvStatus" style="color:#4ade80; font-size:11px; font-weight:600; margin-bottom:12px;"></p>
-            <div id="pvActionBtnBox" style="display:flex; justify-content:center; gap:8px;"></div>
-          </div>
+            <h2>Create Account</h2>
 
-          <div id="chatContainer" class="chat-container">
-            <div class="chat-header">
-              <span id="chatWithTitle">Chatting with...</span>
-              <button style="background:none; border:none; color:#ef4444; cursor:pointer;" onclick="closeChat()">✕</button>
+            <div class="form-group">
+                <label>Username</label>
+                <input id="signupUsername" type="text" placeholder="Choose username">
             </div>
-            <div class="chat-messages" id="chatMessagesBox"></div>
-            <div class="chat-input-box">
-              <input type="text" id="chatInputText" placeholder="Write a message..." onkeydown="if(event.key==='Enter') sendChatMessage('text')" />
-              <input type="file" id="chatPhotoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
-              <button class="btn-photo-attach" title="Send Anime Photo" onclick="document.getElementById('chatPhotoFileInput').click()">📷</button>
-              <button onclick="sendChatMessage('text')">Send</button>
+
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input id="signupDOB" type="date">
             </div>
-          </div>
+
+            <div class="form-group">
+                <label>Password</label>
+
+                <div class="password-wrap">
+                    <input id="signupPassword" type="password" placeholder="Create password">
+                    <button class="show-password" onclick="togglePassword('signupPassword', this)">
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+
+                <div class="password-wrap">
+                    <input id="signupConfirm" type="password" placeholder="Confirm password">
+                    <button class="show-password" onclick="togglePassword('signupConfirm', this)">
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <div id="signupError" class="error"></div>
+
+            <button class="primary-btn" onclick="signup()">Create Account</button>
+
+            <button class="secondary-btn" onclick="showLogin()">
+                Back to Login
+            </button>
+
         </div>
-      </div>
 
-      <div>
-        <button class="btn-drawer-logout" onclick="handleLogout()">Log Out Active Account</button>
-        <button class="btn-delete-account" onclick="deleteCurrentAccount()">⚠️ Delete Account</button>
-      </div>
+        <!-- FORGOT PASSWORD -->
+
+        <div id="forgotForm" class="hidden">
+
+            <h2>Reset Password</h2>
+
+            <p class="subtitle">
+                Enter your username and date of birth to reset your password.
+            </p>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input id="forgotUsername" type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Date of Birth</label>
+                <input id="forgotDOB" type="date">
+            </div>
+
+            <div id="forgotError" class="error"></div>
+
+            <button class="primary-btn" onclick="verifyDOB()">
+                Verify
+            </button>
+
+            <button class="secondary-btn" onclick="showLogin()">
+                Back
+            </button>
+
+        </div>
+
+        <!-- RESET PASSWORD -->
+
+        <div id="resetForm" class="hidden">
+
+            <h2>Create New Password</h2>
+
+            <div class="form-group">
+                <label>New Password</label>
+
+                <div class="password-wrap">
+                    <input id="newPassword" type="password">
+                    <button class="show-password" onclick="togglePassword('newPassword', this)">
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm New Password</label>
+
+                <div class="password-wrap">
+                    <input id="confirmNewPassword" type="password">
+                    <button class="show-password" onclick="togglePassword('confirmNewPassword', this)">
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <div id="resetError" class="error"></div>
+
+            <button class="primary-btn" onclick="resetPassword()">
+                Reset Password
+            </button>
+
+        </div>
+
     </div>
-  </div>
+</div>
 
-  <script>
-    let isSignUp = false;
-    let currentUser = null;
-    let loggedInAccounts = [];
-    let habits = [];
-    let myFriends = [];         
-    let requestsSent = [];      
-    let requestsReceived = [];  
-    let messages = {};          
-    let activeChatFriend = null;
-    let viewedProfileUser = null;
 
-    let currentWeekOffset = 0;
-    let activeCategory = 'All';
-    let selectedAvatarUrl = null;
-    let failedAttempts = 0;
+<!-- =========================
+     MAIN APP
+========================= -->
 
-    // Strict Pure Anime Avatars Only
-    const animeAvatars = [
-      { name: "Naruto Uzumaki", url: "https://unavatar.io/github/naruto" },
-      { name: "Sasuke Uchiha", url: "https://unavatar.io/github/sasuke" },
-      { name: "Kakashi Hatake", url: "https://unavatar.io/github/kakashi" },
-      { name: "Itachi Uchiha", url: "https://unavatar.io/github/itachi" },
-      { name: "Goku", url: "https://unavatar.io/github/goku" },
-      { name: "Vegeta", url: "https://unavatar.io/github/vegeta" },
-      { name: "Monkey D. Luffy", url: "https://unavatar.io/github/luffy" },
-      { name: "Roronoa Zoro", url: "https://unavatar.io/github/zoro" },
-      { name: "Sanji", url: "https://unavatar.io/github/sanji" },
-      { name: "Satoru Gojo", url: "https://unavatar.io/github/gojo" },
-      { name: "Ryomen Sukuna", url: "https://unavatar.io/github/sukuna" },
-      { name: "Tanjiro Kamado", url: "https://unavatar.io/github/tanjiro" },
-      { name: "Nezuko Kamado", url: "https://unavatar.io/github/nezuko" },
-      { name: "Levi Ackerman", url: "https://unavatar.io/github/levi" },
-      { name: "Eren Yeager", url: "https://unavatar.io/github/eren" },
-      { name: "Mikasa Ackerman", url: "https://unavatar.io/github/mikasa" },
-      { name: "Saitama", url: "https://unavatar.io/github/saitama" },
-      { name: "Genos", url: "https://unavatar.io/github/genos" },
-      { name: "Killua Zoldyck", url: "https://unavatar.io/github/killua" },
-      { name: "Gon Freecss", url: "https://unavatar.io/github/gon" },
-      { name: "Light Yagami", url: "https://unavatar.io/github/lightyagami" },
-      { name: "L Lawliet", url: "https://unavatar.io/github/llawliet" },
-      { name: "Megumi Fushiguro", url: "https://unavatar.io/github/fushiguro" },
-      { name: "Nobara Kugisaki", url: "https://unavatar.io/github/nobara" }
-    ];
+<div id="app" class="app hidden">
 
-    const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    <header class="topbar">
 
-    const openEye = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
-    const closedEye = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+        <div class="brand">
+            Daily<span>Flow</span>
+        </div>
 
-    document.getElementById('togglePassword').addEventListener('click', () => {
-      const pass = document.getElementById('password');
-      const isPass = pass.type === 'password';
-      pass.type = isPass ? 'text' : 'password';
-      document.getElementById('eyeIcon').innerHTML = isPass ? closedEye : openEye;
-    });
+        <div class="top-actions">
 
-    window.addEventListener('DOMContentLoaded', () => {
-      buildAnimeGrid();
-      requestNotificationPermission();
+            <div class="profile-mini" onclick="openSection('profile')">
+                <div id="topAvatar" class="avatar">👤</div>
+                <strong id="topUsername">User</strong>
+            </div>
 
-      const savedActiveUser = localStorage.getItem('active_user_session');
-      const savedAccounts = JSON.parse(localStorage.getItem('logged_in_accounts') || '[]');
-      loggedInAccounts = savedAccounts;
+        </div>
 
-      if (savedActiveUser) {
-        const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-        if (usersDatabase[savedActiveUser]) {
-          currentUser = savedActiveUser;
-          loadUserData(savedActiveUser);
-          document.getElementById('authScreen').style.cssText = 'display: none !important;';
-          document.getElementById('dashboardScreen').style.cssText = 'display: block !important;';
-          renderAvatar();
-          renderDashboard();
-          renderMultiAccountList();
-          checkDailyHabitNotification();
-        }
-      }
-    });
+    </header>
 
-    function loadUserData(userKey) {
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      const uData = usersDatabase[userKey] || {};
-      document.getElementById('displayUsername').innerText = userKey;
-      habits = uData.habits || [];
-      myFriends = uData.friends || [];
-      requestsSent = uData.requestsSent || [];
-      requestsReceived = uData.requestsReceived || [];
-      messages = uData.messages || {};
-      
-      selectedAvatarUrl = (uData.selectedAvatarUrl && uData.selectedAvatarUrl.includes('unavatar.io')) 
-        ? uData.selectedAvatarUrl 
-        : animeAvatars[0].url;
+    <div class="layout">
+
+        <aside class="sidebar">
+
+            <button class="nav-btn active" onclick="openSection('home')">
+                🏠 <span>Home</span>
+            </button>
+
+            <button class="nav-btn" onclick="openSection('routine')">
+                📅 <span>Routine</span>
+            </button>
+
+            <button class="nav-btn" onclick="openSection('characters')">
+                🎭 <span>Character</span>
+            </button>
+
+            <button class="nav-btn" onclick="openSection('friends')">
+                👥 <span>Friends</span>
+            </button>
+
+            <button class="nav-btn" onclick="openSection('messages')">
+                💬 <span>Messages</span>
+            </button>
+
+            <button class="nav-btn" onclick="openSection('profile')">
+                👤 <span>Profile</span>
+            </button>
+
+        </aside>
+
+        <main class="content">
+
+            <!-- HOME -->
+
+            <section id="home" class="section active">
+
+                <h1 class="page-title">
+                    Hello, <span id="welcomeName">User</span> 👋
+                </h1>
+
+                <p class="page-subtitle">
+                    Stay consistent with your daily routine.
+                </p>
+
+                <div class="stats">
+
+                    <div class="stat-card">
+                        <h3 id="totalTasks">0</h3>
+                        <p>Total Tasks</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 id="completedTasks">0</h3>
+                        <p>Completed</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 id="remainingTasks">0</h3>
+                        <p>Remaining</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3 id="progressPercent">0%</h3>
+                        <p>Progress</p>
+                    </div>
+
+                </div>
+
+                <div class="routine-card">
+
+                    <div class="routine-header">
+                        <h2>Today's Routine</h2>
+                        <button class="small-btn" onclick="openSection('routine')">
+                            Manage
+                        </button>
+                    </div>
+
+                    <div id="homeRoutineList" class="routine-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ROUTINE -->
+
+            <section id="routine" class="section">
+
+                <h1 class="page-title">Daily Routine 📅</h1>
+
+                <p class="page-subtitle">
+                    Add anything you want to do today.
+                    DailyFlow will automatically classify it.
+                </p>
+
+                <div class="routine-card">
+
+                    <div class="add-routine">
+
+                        <input
+                            id="routineInput"
+                            type="text"
+                            placeholder="Example: Read a book, exercise, meditate..."
+                            onkeydown="if(event.key==='Enter') addRoutine()"
+                        >
+
+                        <button class="small-btn" onclick="addRoutine()">
+                            Add
+                        </button>
+
+                    </div>
+
+                    <div id="classificationHint" class="success"></div>
+
+                    <br>
+
+                    <div id="routineList" class="routine-list"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- CHARACTERS -->
+
+            <section id="characters" class="section">
+
+                <h1 class="page-title">Choose Your Character 🎭</h1>
+
+                <p class="page-subtitle">
+                    Select the character you want to use as your profile picture.
+                </p>
+
+                <div id="characterGrid" class="character-grid"></div>
+
+            </section>
+
+
+            <!-- FRIENDS -->
+
+            <section id="friends" class="section">
+
+                <h1 class="page-title">Friends 👥</h1>
+
+                <p class="page-subtitle">
+                    Connect with your friends.
+                </p>
+
+                <div class="routine-card">
+
+                    <h2 style="margin-bottom:15px;">
+                        Add Friend
+                    </h2>
+
+                    <div class="add-routine">
+
+                        <input
+                            id="friendUsername"
+                            placeholder="Enter username"
+                        >
+
+                        <button class="small-btn" onclick="sendFriendRequest()">
+                            Send Request
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="routine-card">
+
+                    <h2 style="margin-bottom:15px;">
+                        Friend Requests
+                    </h2>
+
+                    <div id="requestList"></div>
+
+                </div>
+
+                <br>
+
+                <div class="routine-card">
+
+                    <h2 style="margin-bottom:15px;">
+                        My Friends
+                    </h2>
+
+                    <div id="friendList" class="friend-grid"></div>
+
+                </div>
+
+            </section>
+
+
+            <!-- MESSAGES -->
+
+            <section id="messages" class="section">
+
+                <h1 class="page-title">Messages 💬</h1>
+
+                <p class="page-subtitle">
+                    Chat with your friends.
+                </p>
+
+                <div class="messages-layout">
+
+                    <div id="chatList" class="chat-list"></div>
+
+                    <div class="chat-area">
+
+                        <div id="chatHeader" class="chat-header">
+                            Select a friend
+                        </div>
+
+                        <div id="chatMessages" class="chat-messages"></div>
+
+                        <div class="chat-input">
+
+                            <input
+                                id="messageInput"
+                                placeholder="Type a message..."
+                                onkeydown="if(event.key==='Enter') sendMessage()"
+                            >
+
+                            <button class="small-btn" onclick="sendMessage()">
+                                Send
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PROFILE -->
+
+            <section id="profile" class="section">
+
+                <h1 class="page-title">Profile 👤</h1>
+
+                <div class="profile-card">
+
+                    <div class="profile-main">
+
+                        <div id="profileAvatar" class="avatar">
+                            👤
+                        </div>
+
+                        <div class="profile-details">
+
+                            <h2 id="profileUsername">
+                                User
+                            </h2>
+
+                            <p id="profileDOB">
+                                Date of birth
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <button class="primary-btn" onclick="openSection('characters')">
+                        Change Anime Character
+                    </button>
+
+                    <div class="account-box">
+
+                        <h3>Account</h3>
+
+                        <button class="secondary-btn" onclick="addAccount()">
+                            ＋ Add Account
+                        </button>
+
+                        <button class="danger-btn" onclick="logout()">
+                            Log Out
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   STORAGE
+========================================== */
+
+const USERS_KEY = "dailyflow_users";
+const CURRENT_USER_KEY = "dailyflow_current_user";
+
+function getUsers() {
+    return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+}
+
+function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function getCurrentUser() {
+    const username = localStorage.getItem(CURRENT_USER_KEY);
+
+    if (!username) return null;
+
+    return getUsers().find(
+        user => user.username.toLowerCase() === username.toLowerCase()
+    );
+}
+
+function updateCurrentUser(updatedUser) {
+
+    let users = getUsers();
+
+    const index = users.findIndex(
+        user => user.username.toLowerCase() === updatedUser.username.toLowerCase()
+    );
+
+    if (index !== -1) {
+        users[index] = updatedUser;
+        saveUsers(users);
+    }
+}
+
+
+/* ==========================================
+   CHARACTERS
+========================================== */
+
+/*
+    These are anime-inspired placeholder character images.
+    Replace the image URLs with your own licensed images
+    if you want specific copyrighted characters.
+*/
+
+const characters = [
+
+    {
+        name: "Ninja Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ninja"
+    },
+
+    {
+        name: "Saiyan Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=goku"
+    },
+
+    {
+        name: "Shadow Fighter",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=shadow"
+    },
+
+    {
+        name: "Blue Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=hero"
+    },
+
+    {
+        name: "Sword Master",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=sword"
+    },
+
+    {
+        name: "Fire Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=fire"
+    },
+
+    {
+        name: "Ice Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ice"
+    },
+
+    {
+        name: "Galaxy Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=galaxy"
+    },
+
+    {
+        name: "Lightning Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=lightning"
+    },
+
+    {
+        name: "Dark Ninja",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=dark"
+    },
+
+    {
+        name: "Red Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=red"
+    },
+
+    {
+        name: "Green Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=green"
+    },
+
+    {
+        name: "Samurai",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=samurai"
+    },
+
+    {
+        name: "Young Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=young"
+    },
+
+    {
+        name: "Mystic Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=mystic"
+    },
+
+    {
+        name: "Dragon Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=dragon"
+    },
+
+    {
+        name: "Space Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=space"
+    },
+
+    {
+        name: "Storm Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=storm"
+    },
+
+    {
+        name: "Spirit Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=spirit"
+    },
+
+    {
+        name: "Legend Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=legend"
+    },
+
+    {
+        name: "Moon Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=moon"
+    },
+
+    {
+        name: "Sun Warrior",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=sun"
+    },
+
+    {
+        name: "Ocean Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=ocean"
+    },
+
+    {
+        name: "Phantom Hero",
+        image: "https://api.dicebear.com/9.x/adventurer/svg?seed=phantom"
     }
 
-    function requestNotificationPermission() {
-      if ('Notification' in window && Notification.permission !== 'granted' && Notification.permission !== 'denied') {
-        Notification.requestPermission();
-      }
+];
+
+
+/* ==========================================
+   AUTH
+========================================== */
+
+function showLogin() {
+
+    document.getElementById("loginForm").classList.remove("hidden");
+    document.getElementById("signupForm").classList.add("hidden");
+    document.getElementById("forgotForm").classList.add("hidden");
+    document.getElementById("resetForm").classList.add("hidden");
+
+}
+
+function showSignup() {
+
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("signupForm").classList.remove("hidden");
+    document.getElementById("forgotForm").classList.add("hidden");
+    document.getElementById("resetForm").classList.add("hidden");
+
+}
+
+function showForgotPassword() {
+
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("signupForm").classList.add("hidden");
+    document.getElementById("forgotForm").classList.remove("hidden");
+    document.getElementById("resetForm").classList.add("hidden");
+
+}
+
+function togglePassword(id, button) {
+
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+        input.type = "text";
+        button.textContent = "Hide";
+    } else {
+        input.type = "password";
+        button.textContent = "Show";
     }
 
-    function checkDailyHabitNotification() {
-      const todayKey = formatDateKey(new Date());
-      let checkedToday = habits.some(h => h.progress && h.progress[todayKey]);
+}
 
-      if (!checkedToday) {
-        const notifText = "⚠️ Daily Notice: You have not entered or completed your tasks for today yet! Please update your habits!";
-        setTimeout(() => {
-          alert(notifText);
-        }, 800);
 
-        if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification("PulseTrack Task Reminder 🔥", {
-            body: "Today you have not entered your task! Log in now to record your daily progress.",
-            icon: selectedAvatarUrl || animeAvatars[0].url
-          });
-        }
-      }
-    }
+/* ==========================================
+   SIGNUP
+========================================== */
 
-    function toggleMode() {
-      isSignUp = !isSignUp;
-      clearMsgs();
-      failedAttempts = 0;
-      document.getElementById('forgotPasswordBtn').style.display = 'none';
+function signup() {
 
-      document.getElementById('dobGroup').style.display = isSignUp ? 'block' : 'none';
-      document.getElementById('submitBtn').innerText = isSignUp ? 'Sign Up' : 'Sign In';
-      document.getElementById('promptText').innerText = isSignUp ? 'Already have an account?' : "Don't have an account?";
-      document.getElementById('switchBtn').innerText = isSignUp ? 'Log In' : 'Sign Up';
-      document.getElementById('subTitle').innerText = isSignUp ? 'Create an account & select DOB for recovery' : 'Log in to view daily goals & stay consistent';
-    }
+    const username =
+        document.getElementById("signupUsername").value.trim();
 
-    function clearMsgs() {
-      document.getElementById('errorMsg').style.display = 'none';
-      document.getElementById('successMsg').style.display = 'none';
-    }
+    const dob =
+        document.getElementById("signupDOB").value;
 
-    function handleAuth() {
-      clearMsgs();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
-      const dob = document.getElementById('dobInput').value;
-      const errorMsg = document.getElementById('errorMsg');
-      const successMsg = document.getElementById('successMsg');
+    const password =
+        document.getElementById("signupPassword").value;
 
-      if (!user || !pass) {
-        errorMsg.innerText = "Please enter both username and password.";
-        errorMsg.style.display = 'block';
+    const confirm =
+        document.getElementById("signupConfirm").value;
+
+    const error =
+        document.getElementById("signupError");
+
+    error.textContent = "";
+
+    if (!username || !dob || !password || !confirm) {
+        error.textContent = "Please fill in all fields.";
         return;
-      }
-
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      const userKey = user.toLowerCase();
-
-      if (!isSignUp) {
-        if (!usersDatabase[userKey]) {
-          errorMsg.innerText = "Account not found! Click 'Sign Up' below.";
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        if (usersDatabase[userKey].password !== pass) {
-          failedAttempts++;
-          if (failedAttempts >= 3) {
-            document.getElementById('forgotPasswordBtn').style.display = 'block';
-            errorMsg.innerText = "Incorrect password! Need to reset? Click 'Forgot Password?' below.";
-          } else {
-            errorMsg.innerText = `Incorrect password! (${3 - failedAttempts} attempt(s) remaining)`;
-          }
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        failedAttempts = 0;
-        if (!loggedInAccounts.includes(userKey)) loggedInAccounts.push(userKey);
-
-        currentUser = userKey;
-        localStorage.setItem('active_user_session', currentUser);
-        localStorage.setItem('logged_in_accounts', JSON.stringify(loggedInAccounts));
-
-        loadUserData(userKey);
-
-        document.getElementById('authScreen').style.cssText = 'display: none !important;';
-        document.getElementById('dashboardScreen').style.cssText = 'display: block !important;';
-        renderAvatar();
-        renderDashboard();
-        renderMultiAccountList();
-        checkDailyHabitNotification();
-
-      } else {
-        if (!dob) {
-          errorMsg.innerText = "Please select your Date of Birth for recovery!";
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        if (usersDatabase[userKey]) {
-          errorMsg.innerText = "Account already exists! Click 'Log In'.";
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        const randomAvatarIndex = Math.floor(Math.random() * animeAvatars.length);
-        const assignedAvatar = animeAvatars[randomAvatarIndex].url;
-
-        usersDatabase[userKey] = { 
-          password: pass, 
-          dob: dob,
-          habits: [], 
-          friends: [],
-          requestsSent: [],
-          requestsReceived: [],
-          messages: {},
-          selectedAvatarUrl: assignedAvatar,
-          joinedTimestamp: Date.now()
-        };
-        localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-
-        successMsg.innerText = "Account created successfully! Click 'Log In' to continue.";
-        successMsg.style.display = 'block';
-        toggleMode();
-      }
     }
 
-    function renderMultiAccountList() {
-      const container = document.getElementById('accountsListContainer');
-      container.innerHTML = '';
-
-      loggedInAccounts.forEach(acc => {
-        const div = document.createElement('div');
-        div.className = `account-item ${acc === currentUser ? 'active' : ''}`;
-        div.innerHTML = `
-          <span>@${acc} ${acc === currentUser ? '(Active)' : ''}</span>
-          ${acc !== currentUser ? `<button class="btn-req-action btn-send-req" onclick="switchAccount('${acc}')">Switch</button>` : ''}
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function switchAccount(acc) {
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (usersDatabase[acc]) {
-        currentUser = acc;
-        localStorage.setItem('active_user_session', currentUser);
-
-        loadUserData(acc);
-
-        renderAvatar();
-        renderDashboard();
-        renderMultiAccountList();
-        toggleDrawer(false);
-      }
-    }
-
-    function addNewAccountScreen() {
-      toggleDrawer(false);
-      document.getElementById('dashboardScreen').style.cssText = 'display: none !important;';
-      document.getElementById('authScreen').style.cssText = 'display: block !important;';
-      document.getElementById('username').value = '';
-      document.getElementById('password').value = '';
-    }
-
-    function toggleHiddenPassBox() {
-      const box = document.getElementById('hiddenPassBox');
-      box.style.display = box.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function changeAccountPassword() {
-      const oldPass = document.getElementById('oldPasswordInput').value.trim();
-      const newPass = document.getElementById('newPasswordInput').value.trim();
-
-      if (!oldPass || !newPass) {
-        alert("Please enter both your current password and new password.");
+    if (username.length < 3) {
+        error.textContent = "Username must be at least 3 characters.";
         return;
-      }
-
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (!usersDatabase[currentUser]) return;
-
-      if (usersDatabase[currentUser].password !== oldPass) {
-        alert("Incorrect current password! Password update failed.");
-        return;
-      }
-
-      usersDatabase[currentUser].password = newPass;
-      localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      
-      document.getElementById('oldPasswordInput').value = '';
-      document.getElementById('newPasswordInput').value = '';
-      alert("Password updated successfully!");
-      toggleHiddenPassBox();
     }
 
-    async function registerBiometrics() {
-      if (!window.PublicKeyCredential) {
-        alert("Biometrics are not supported on this browser.");
+    if (password.length < 4) {
+        error.textContent = "Password must be at least 4 characters.";
         return;
-      }
+    }
 
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
+    if (password !== confirm) {
+        error.textContent = "Passwords do not match.";
+        return;
+    }
 
-        const createCredentialOptions = {
-          publicKey: {
-            challenge: challenge,
-            rp: { name: "PulseTrack App" },
-            user: {
-              id: Uint8Array.from(currentUser, c => c.charCodeAt(0)),
-              name: currentUser,
-              displayName: currentUser
+    let users = getUsers();
+
+    if (
+        users.some(
+            user => user.username.toLowerCase() === username.toLowerCase()
+        )
+    ) {
+        error.textContent = "Username already exists.";
+        return;
+    }
+
+    const newUser = {
+
+        username: username,
+
+        dob: dob,
+
+        password: password,
+
+        character: characters[0],
+
+        routine: [
+
+            {
+                id: Date.now(),
+                text: "Study for 30 minutes",
+                category: "Study",
+                completed: false
             },
-            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
-            authenticatorSelection: { authenticatorAttachment: "platform" },
-            timeout: 60000
-          }
-        };
 
-        const cred = await navigator.credentials.create(createCredentialOptions);
-        if (cred) {
-          const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-          if (usersDatabase[currentUser]) {
-            usersDatabase[currentUser].hasBiometrics = true;
-            localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-            alert("Touch ID / Fingerprint enabled for " + currentUser + "!");
-          }
-        }
-      } catch (err) {
-        alert("Biometric setup canceled or unsupported.");
-      }
-    }
-
-    async function handleBiometricLogin() {
-      const user = document.getElementById('username').value.trim().toLowerCase();
-      if (!user) {
-        alert("Please enter your username first to use Biometric login!");
-        return;
-      }
-
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (!usersDatabase[user]) {
-        alert("Username not found!");
-        return;
-      }
-
-      if (!window.PublicKeyCredential) {
-        alert("Biometric WebAuthn is unsupported on this device.");
-        return;
-      }
-
-      try {
-        const challenge = new Uint8Array(32);
-        window.crypto.getRandomValues(challenge);
-
-        const assertion = await navigator.credentials.get({ publicKey: { challenge: challenge, timeout: 60000 } });
-        if (assertion) {
-          if (!loggedInAccounts.includes(user)) loggedInAccounts.push(user);
-
-          currentUser = user;
-          localStorage.setItem('active_user_session', currentUser);
-          localStorage.setItem('logged_in_accounts', JSON.stringify(loggedInAccounts));
-
-          loadUserData(user);
-
-          document.getElementById('authScreen').style.cssText = 'display: none !important;';
-          document.getElementById('dashboardScreen').style.cssText = 'display: block !important;';
-          renderAvatar();
-          renderDashboard();
-          renderMultiAccountList();
-          checkDailyHabitNotification();
-        }
-      } catch (err) {
-        alert("Biometric login failed or canceled.");
-      }
-    }
-
-    function openResetModal() {
-      document.getElementById('resetUsername').value = document.getElementById('username').value;
-      document.getElementById('modalError').style.display = 'none';
-      document.getElementById('resetModal').style.display = 'flex';
-    }
-
-    function closeResetModal() {
-      document.getElementById('resetModal').style.display = 'none';
-    }
-
-    function processPasswordReset() {
-      const u = document.getElementById('resetUsername').value.trim().toLowerCase();
-      const dob = document.getElementById('resetDob').value;
-      const newPass = document.getElementById('resetNewPass').value.trim();
-      const err = document.getElementById('modalError');
-
-      if (!u || !dob || !newPass) {
-        err.innerText = "Please fill in all fields.";
-        err.style.display = 'block';
-        return;
-      }
-
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-
-      if (!usersDatabase[u]) {
-        err.innerText = "Username not found!";
-        err.style.display = 'block';
-        return;
-      }
-
-      if (usersDatabase[u].dob === dob) {
-        usersDatabase[u].password = newPass;
-        localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-        alert("Password reset successfully! You can now log in.");
-        closeResetModal();
-        failedAttempts = 0;
-        document.getElementById('forgotPasswordBtn').style.display = 'none';
-      } else {
-        err.innerText = "Incorrect Date of Birth! Recovery failed.";
-        err.style.display = 'block';
-      }
-    }
-
-    function handleLogout() {
-      loggedInAccounts = loggedInAccounts.filter(a => a !== currentUser);
-      localStorage.setItem('logged_in_accounts', JSON.stringify(loggedInAccounts));
-      localStorage.removeItem('active_user_session');
-
-      toggleDrawer(false);
-      document.getElementById('password').value = '';
-      currentUser = null;
-      document.getElementById('dashboardScreen').style.cssText = 'display: none !important;';
-      document.getElementById('authScreen').style.cssText = 'display: block !important;';
-    }
-
-    function deleteCurrentAccount() {
-      if (!currentUser) return;
-      const confirmDelete = confirm(`⚠️ Are you absolutely sure you want to PERMANENTLY delete account @${currentUser}? This action cannot be undone.`);
-      
-      if (confirmDelete) {
-        const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-        delete usersDatabase[currentUser];
-        localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-
-        loggedInAccounts = loggedInAccounts.filter(a => a !== currentUser);
-        localStorage.setItem('logged_in_accounts', JSON.stringify(loggedInAccounts));
-        localStorage.removeItem('active_user_session');
-
-        alert(`Account @${currentUser} has been completely deleted.`);
-        toggleDrawer(false);
-        currentUser = null;
-        document.getElementById('dashboardScreen').style.cssText = 'display: none !important;';
-        document.getElementById('authScreen').style.cssText = 'display: block !important;';
-      }
-    }
-
-    function saveData() {
-      if (!currentUser) return;
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (usersDatabase[currentUser]) {
-        usersDatabase[currentUser].habits = habits;
-        usersDatabase[currentUser].friends = myFriends;
-        usersDatabase[currentUser].requestsSent = requestsSent;
-        usersDatabase[currentUser].requestsReceived = requestsReceived;
-        usersDatabase[currentUser].messages = messages;
-        usersDatabase[currentUser].selectedAvatarUrl = selectedAvatarUrl;
-        localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      }
-    }
-
-    function autoClassifyGoal() {
-      const val = document.getElementById('habitInput').value.toLowerCase();
-      const select = document.getElementById('habitCategory');
-
-      if (val.includes('code') || val.includes('coding') || val.includes('design') || val.includes('python') || val.includes('learn')) {
-        select.value = 'Skills';
-      } else if (val.includes('exer') || val.includes('run') || val.includes('gym') || val.includes('walk') || val.includes('workout') || val.includes('pushup')) {
-        select.value = 'Fitness';
-      } else if (val.includes('read') || val.includes('book') || val.includes('novel')) {
-        select.value = 'Reading';
-      } else if (val.includes('meditat') || val.includes('pray') || val.includes('chant') || val.includes('breathe')) {
-        select.value = 'Meditation';
-      } else if (val.includes('study') || val.includes('math') || val.includes('exam') || val.includes('homework') || val.includes('revision')) {
-        select.value = 'Academics';
-      }
-    }
-
-    function buildAnimeGrid() {
-      const grid = document.getElementById('animeGrid');
-      grid.innerHTML = '';
-
-      animeAvatars.forEach(avatar => {
-        const card = document.createElement('div');
-        card.className = 'anime-card';
-        card.title = avatar.name;
-        card.onclick = () => selectAnimeAvatar(avatar.url);
-        card.innerHTML = `<img src="${avatar.url}" alt="${avatar.name}" />`;
-        grid.appendChild(card);
-      });
-    }
-
-    function toggleAvatarSelector() {
-      const sel = document.getElementById('animeAvatarSelector');
-      sel.style.display = sel.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function selectAnimeAvatar(url) {
-      selectedAvatarUrl = url;
-      renderAvatar();
-      saveData();
-      toggleAvatarSelector();
-      renderFriendsTab();
-    }
-
-    function renderAvatar() {
-      const fallbackUrl = animeAvatars[0].url;
-      const finalAvatar = (selectedAvatarUrl && selectedAvatarUrl.includes('unavatar.io')) 
-        ? selectedAvatarUrl 
-        : fallbackUrl;
-
-      const imgTag = `<img src="${finalAvatar}" alt="Anime Profile Picture" />`;
-      document.getElementById('headerAvatarBtn').innerHTML = imgTag;
-      document.getElementById('drawerAvatarPreview').innerHTML = imgTag;
-    }
-
-    function toggleDrawer(show) {
-      document.getElementById('drawerOverlay').style.display = show ? 'flex' : 'none';
-      if (show) {
-        updateDrawerStats();
-        renderFriendsTab();
-      }
-    }
-
-    function switchDrawerTab(tab) {
-      document.getElementById('tabMyProfile').classList.toggle('active', tab === 'profile');
-      document.getElementById('tabFindFriends').classList.toggle('active', tab === 'friends');
-
-      document.getElementById('drawerTabProfile').style.display = tab === 'profile' ? 'block' : 'none';
-      document.getElementById('drawerTabFriends').style.display = tab === 'friends' ? 'block' : 'none';
-      if (tab === 'friends') renderFriendsTab();
-    }
-
-    function renderFriendsTab() {
-      const reqContainer = document.getElementById('incomingRequestsContainer');
-      const listContainer = document.getElementById('friendsListContainer');
-      const query = document.getElementById('friendSearchInput').value.toLowerCase().trim();
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-
-      if (usersDatabase[currentUser]) {
-        requestsReceived = usersDatabase[currentUser].requestsReceived || [];
-        myFriends = usersDatabase[currentUser].friends || [];
-        requestsSent = usersDatabase[currentUser].requestsSent || [];
-      }
-
-      reqContainer.innerHTML = '';
-      if (requestsReceived.length > 0) {
-        reqContainer.innerHTML = `<div class="requests-section-title">📩 Incoming Follow Requests (${requestsReceived.length})</div>`;
-        requestsReceived.forEach(reqSender => {
-          const senderAvatar = (usersDatabase[reqSender]?.selectedAvatarUrl && usersDatabase[reqSender].selectedAvatarUrl.includes('unavatar.io'))
-            ? usersDatabase[reqSender].selectedAvatarUrl
-            : animeAvatars[0].url;
-
-          const card = document.createElement('div');
-          card.className = 'friend-card';
-          card.innerHTML = `
-            <div class="friend-info-left" onclick="openUserProfileCard('${reqSender}')">
-              <img class="friend-avatar-sm" src="${senderAvatar}" />
-              <div class="friend-info">
-                <h4>@${reqSender}</h4>
-                <p>Requested to follow you</p>
-              </div>
-            </div>
-            <div>
-              <button class="btn-req-action btn-accept" onclick="acceptFriendRequest('${reqSender}')">Accept</button>
-              <button class="btn-req-action btn-reject" onclick="rejectFriendRequest('${reqSender}')">Delete</button>
-            </div>
-          `;
-          reqContainer.appendChild(card);
-        });
-      }
-
-      listContainer.innerHTML = `<div class="requests-section-title">🔍 All Registered Accounts</div>`;
-      let totalDisplayCount = 0;
-
-      for (let userKey in usersDatabase) {
-        if (userKey === currentUser) continue;
-
-        if (!query || userKey.includes(query)) {
-          totalDisplayCount++;
-          const userData = usersDatabase[userKey];
-          
-          const targetAvatar = (userData?.selectedAvatarUrl && userData.selectedAvatarUrl.includes('unavatar.io'))
-            ? userData.selectedAvatarUrl
-            : animeAvatars[0].url;
-
-          const isFriend = myFriends.includes(userKey);
-          const isLoggedInNow = loggedInAccounts.includes(userKey);
-          const isNewMember = userData.joinedTimestamp && (Date.now() - userData.joinedTimestamp < 7 * 24 * 60 * 60 * 1000);
-
-          const card = document.createElement('div');
-          card.className = 'friend-card';
-          card.onclick = () => openUserProfileCard(userKey);
-          card.innerHTML = `
-            <div class="friend-info-left">
-              <img class="friend-avatar-sm" src="${targetAvatar}" />
-              <div class="friend-info">
-                <h4>
-                  @${userKey}
-                  ${isLoggedInNow ? '<span class="online-badge">🟢 Active</span>' : ''}
-                  ${isNewMember ? '<span class="new-member-badge">NEW</span>' : ''}
-                </h4>
-                <p>${isFriend ? '✓ Friends' : (isLoggedInNow ? 'Logged In Now - Tap to Request' : 'PulseTrack Member')}</p>
-              </div>
-            </div>
-            <span style="color:#94a3b8; font-size:12px;">View Profile ›</span>
-          `;
-          listContainer.appendChild(card);
-        }
-      }
-
-      if (totalDisplayCount === 0) {
-        listContainer.innerHTML += `<p style="text-align:center; color:#64748b; font-size:12px; margin-top:15px;">No registered accounts available!</p>`;
-      }
-    }
-
-    function openUserProfileCard(targetUser) {
-      viewedProfileUser = targetUser;
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      const targetData = usersDatabase[targetUser];
-      if (!targetData) return;
-
-      const targetAvatar = (targetData.selectedAvatarUrl && targetData.selectedAvatarUrl.includes('unavatar.io'))
-        ? targetData.selectedAvatarUrl
-        : animeAvatars[0].url;
-
-      document.getElementById('pvAvatar').src = targetAvatar;
-      
-      const isLoggedInNow = loggedInAccounts.includes(targetUser);
-      document.getElementById('pvUsername').innerHTML = `@${targetUser} ${isLoggedInNow ? '<span class="online-badge">🟢 Logged In Now</span>' : ''}`;
-
-      const isFriend = myFriends.includes(targetUser);
-      const isSent = requestsSent.includes(targetUser);
-      const isRec = requestsReceived.includes(targetUser);
-
-      const statusText = isFriend ? "✓ Confirmed Friend" : isSent ? "Follow Request Pending..." : (isLoggedInNow ? "🟢 Currently Active User" : "Public Profile");
-      document.getElementById('pvStatus').innerText = statusText;
-
-      const actionBox = document.getElementById('pvActionBtnBox');
-      actionBox.innerHTML = '';
-
-      if (isFriend) {
-        actionBox.innerHTML = `
-          <button class="btn-req-action btn-chat" onclick="openChat('${targetUser}')">💬 Message</button>
-        `;
-      } else if (isSent) {
-        actionBox.innerHTML = `<button class="btn-req-action btn-pending">Follow Request Sent</button>`;
-      } else if (isRec) {
-        actionBox.innerHTML = `
-          <button class="btn-req-action btn-accept" onclick="acceptFriendRequest('${targetUser}')">Accept Request</button>
-          <button class="btn-req-action btn-reject" onclick="rejectFriendRequest('${targetUser}')">Reject</button>
-        `;
-      } else {
-        actionBox.innerHTML = `
-          <button class="btn-req-action btn-send-req" onclick="sendFriendRequest('${targetUser}')">+ Send Follow Request</button>
-        `;
-      }
-
-      document.getElementById('profileViewCard').style.display = 'block';
-    }
-
-    function sendFriendRequest(targetUser) {
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (!usersDatabase[targetUser]) return;
-
-      if (!requestsSent.includes(targetUser)) requestsSent.push(targetUser);
-
-      if (!usersDatabase[targetUser].requestsReceived) usersDatabase[targetUser].requestsReceived = [];
-      if (!usersDatabase[targetUser].requestsReceived.includes(currentUser)) {
-        usersDatabase[targetUser].requestsReceived.push(currentUser);
-      }
-
-      localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      saveData();
-      openUserProfileCard(targetUser);
-      renderFriendsTab();
-    }
-
-    function acceptFriendRequest(senderUser) {
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-
-      if (!myFriends.includes(senderUser)) myFriends.push(senderUser);
-      if (!usersDatabase[senderUser].friends) usersDatabase[senderUser].friends = [];
-      if (!usersDatabase[senderUser].friends.includes(currentUser)) usersDatabase[senderUser].friends.push(currentUser);
-
-      requestsReceived = requestsReceived.filter(u => u !== senderUser);
-      if (usersDatabase[senderUser].requestsSent) {
-        usersDatabase[senderUser].requestsSent = usersDatabase[senderUser].requestsSent.filter(u => u !== currentUser);
-      }
-
-      localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      saveData();
-      openUserProfileCard(senderUser);
-      renderFriendsTab();
-    }
-
-    function rejectFriendRequest(senderUser) {
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-
-      requestsReceived = requestsReceived.filter(u => u !== senderUser);
-      if (usersDatabase[senderUser].requestsSent) {
-        usersDatabase[senderUser].requestsSent = usersDatabase[senderUser].requestsSent.filter(u => u !== currentUser);
-      }
-
-      localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      saveData();
-      document.getElementById('profileViewCard').style.display = 'none';
-      renderFriendsTab();
-    }
-
-    function openChat(friendUser) {
-      activeChatFriend = friendUser;
-      document.getElementById('chatWithTitle').innerText = `Chat with @${friendUser}`;
-      document.getElementById('chatContainer').style.display = 'block';
-      renderChatMessages();
-    }
-
-    function closeChat() {
-      activeChatFriend = null;
-      document.getElementById('chatContainer').style.display = 'none';
-    }
-
-    function renderChatMessages() {
-      if (!activeChatFriend) return;
-      const box = document.getElementById('chatMessagesBox');
-      box.innerHTML = '';
-
-      const chatKey = [currentUser, activeChatFriend].sort().join('_');
-      const chatHistory = messages[chatKey] || [];
-
-      chatHistory.forEach(msg => {
-        const div = document.createElement('div');
-        div.className = `chat-msg ${msg.sender === currentUser ? 'me' : 'them'}`;
-        
-        if (msg.type === 'image') {
-          div.innerHTML = `<div>${msg.text ? msg.text : ''}</div><img src="${msg.imgUrl}" alt="Sent photo" />`;
-        } else {
-          div.innerText = msg.text;
-        }
-        
-        box.appendChild(div);
-      });
-
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function sendChatMessage(type = 'text', content = '') {
-      if (!activeChatFriend) return;
-      const input = document.getElementById('chatInputText');
-      const text = type === 'text' ? input.value.trim() : '';
-
-      if (type === 'text' && !text) return;
-
-      const chatKey = [currentUser, activeChatFriend].sort().join('_');
-      if (!messages[chatKey]) messages[chatKey] = [];
-
-      const newMsg = {
-        sender: currentUser,
-        text: text,
-        type: type,
-        imgUrl: type === 'image' ? content : null,
-        time: new Date().toISOString()
-      };
-
-      messages[chatKey].push(newMsg);
-      if (type === 'text') input.value = '';
-
-      const usersDatabase = JSON.parse(localStorage.getItem('registered_users') || '{}');
-      if (usersDatabase[activeChatFriend]) {
-        if (!usersDatabase[activeChatFriend].messages) usersDatabase[activeChatFriend].messages = {};
-        usersDatabase[activeChatFriend].messages[chatKey] = messages[chatKey];
-      }
-
-      saveData();
-      localStorage.setItem('registered_users', JSON.stringify(usersDatabase));
-      renderChatMessages();
-    }
-
-    function handlePhotoUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        sendChatMessage('image', e.target.result);
-      };
-      reader.readAsDataURL(file);
-      event.target.value = '';
-    }
-
-    function updateDrawerStats() {
-      document.getElementById('countFitness').innerText = habits.filter(h => h.category === 'Fitness').length;
-      document.getElementById('countReading').innerText = habits.filter(h => h.category === 'Reading').length;
-      document.getElementById('countSkills').innerText = habits.filter(h => h.category === 'Skills').length;
-      document.getElementById('countMeditation').innerText = habits.filter(h => h.category === 'Meditation').length;
-      document.getElementById('countAcademics').innerText = habits.filter(h => h.category === 'Academics').length;
-    }
-
-    function formatDateKey(dateObj) {
-      const year = dateObj.getFullYear();
-      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const day = String(dateObj.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-
-    function calculateStreak(habit) {
-      if (!habit.progress) return 0;
-      let streak = 0;
-      let checkDate = new Date();
-
-      while (true) {
-        const key = formatDateKey(checkDate);
-        if (habit.progress[key]) {
-          streak++;
-          checkDate.setDate(checkDate.getDate() - 1);
-        } else if (streak === 0) {
-          checkDate.setDate(checkDate.getDate() - 1);
-          const yesterdayKey = formatDateKey(checkDate);
-          if (habit.progress[yesterdayKey]) continue;
-          break;
-        } else {
-          break;
-        }
-      }
-      return streak;
-    }
-
-    function getWeekDates(offset) {
-      const now = new Date();
-      const dayOfWeek = now.getDay();
-      const distanceToMon = (dayOfWeek === 0 ? -6 : 1 - dayOfWeek) + (offset * 7);
-
-      const monday = new Date(now);
-      monday.setDate(now.getDate() + distanceToMon);
-
-      const weekDates = [];
-      for (let i = 0; i < 7; i++) {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
-        weekDates.push(d);
-      }
-      return weekDates;
-    }
-
-    function changeWeek(direction) {
-      currentWeekOffset += direction;
-      renderDashboard();
-    }
-
-    function filterCategory(cat) {
-      activeCategory = cat;
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.innerText.includes(cat));
-      });
-      renderDashboard();
-    }
-
-    function addHabit() {
-      const input = document.getElementById('habitInput');
-      const catSelect = document.getElementById('habitCategory');
-      const text = input.value.trim();
-      if (!text) return;
-
-      habits.push({ id: Date.now(), text: text, category: catSelect.value, progress: {} });
-      input.value = '';
-      saveData();
-      renderDashboard();
-    }
-
-    function deleteHabit(id) {
-      habits = habits.filter(h => h.id !== id);
-      saveData();
-      renderDashboard();
-    }
-
-    function toggleCheck(habitId, dateKey) {
-      const todayKey = formatDateKey(new Date());
-
-      if (dateKey !== todayKey) {
-        alert("You can only log habits for TODAY!");
-        return;
-      }
-
-      const habit = habits.find(h => h.id === habitId);
-      if (habit) {
-        if (!habit.progress) habit.progress = {};
-        habit.progress[dateKey] = !habit.progress[dateKey];
-        saveData();
-      }
-      renderDashboard();
-    }
-
-    function renderDashboard() {
-      const weekDates = getWeekDates(currentWeekOffset);
-      const startStr = weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-      const endStr = weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      
-      const todayObj = new Date();
-      todayObj.setHours(0, 0, 0, 0);
-      const todayKey = formatDateKey(todayObj);
-      
-      document.getElementById('weekTitleDisplay').innerText = `Week: ${startStr} – ${endStr}`;
-
-      const headerRow = document.getElementById('tableHeaderRow');
-      headerRow.innerHTML = `<th style="text-align:left;">Habit</th><th>Streak</th>`;
-      
-      weekDates.forEach((dateObj, idx) => {
-        headerRow.innerHTML += `
-          <th>
-            ${daysOfWeek[idx]}
-            <span class="date-sub">${dateObj.getMonth() + 1}/${dateObj.getDate()}</span>
-          </th>
-        `;
-      });
-      headerRow.innerHTML += `<th>Action</th>`;
-
-      const tbody = document.getElementById('habitTableBody');
-      const emptyText = document.getElementById('emptyText');
-      tbody.innerHTML = '';
-
-      const filteredHabits = activeCategory === 'All' ? habits : habits.filter(h => h.category === activeCategory);
-
-      if (filteredHabits.length === 0) {
-        emptyText.style.display = 'block';
-      } else {
-        emptyText.style.display = 'none';
-
-        filteredHabits.forEach(habit => {
-          const streak = calculateStreak(habit);
-          const tr = document.createElement('tr');
-          let rowHTML = `
-            <td class="habit-name">
-              ${habit.text}
-              <br><span class="badge-cat" style="background:#1e293b; color:#38bdf8;">${habit.category || 'General'}</span>
-            </td>
-            <td><span class="streak-badge">🔥 ${streak}d</span></td>
-          `;
-
-          weekDates.forEach(dateObj => {
-            const dateKey = formatDateKey(dateObj);
-            const isChecked = habit.progress && habit.progress[dateKey];
-            
-            const compareDate = new Date(dateObj);
-            compareDate.setHours(0, 0, 0, 0);
-
-            const isToday = (dateKey === todayKey);
-            const isPast = compareDate < todayObj;
-
-            if (isToday) {
-              rowHTML += `
-                <td>
-                  <input type="checkbox" ${isChecked ? 'checked' : ''} onclick="toggleCheck(${habit.id}, '${dateKey}')" />
-                </td>
-              `;
-            } else if (isPast) {
-              if (isChecked) {
-                rowHTML += `<td><span class="status-check">✓</span></td>`;
-              } else {
-                rowHTML += `<td><span class="status-missed">❌</span></td>`;
-              }
-            } else {
-              rowHTML += `
-                <td>
-                  <input type="checkbox" disabled title="Future date" />
-                </td>
-              `;
+            {
+                id: Date.now() + 1,
+                text: "Read a book",
+                category: "Reading",
+                completed: false
+            },
+
+            {
+                id: Date.now() + 2,
+                text: "Exercise",
+                category: "Exercise",
+                completed: false
+            },
+
+            {
+                id: Date.now() + 3,
+                text: "Meditation",
+                category: "Meditation",
+                completed: false
             }
-          });
 
-          rowHTML += `<td><button class="btn-delete" onclick="deleteHabit(${habit.id})">✕</button></td>`;
-          tr.innerHTML = rowHTML;
-          tbody.appendChild(tr);
-        });
-      }
+        ],
 
-      renderLineChart(weekDates, filteredHabits);
-      renderMonthlyProgress(filteredHabits);
-    }
+        friends: [],
 
-    function renderMonthlyProgress(targetHabits) {
-      const monthHabitBox = document.getElementById('monthlyHabitBreakdown');
-      monthHabitBox.innerHTML = '';
+        requests: [],
 
-      if (targetHabits.length === 0) {
-        document.getElementById('monthOverallRate').innerText = '0%';
-        document.getElementById('monthBestStreak').innerText = '0d';
-        document.getElementById('monthTotalHabits').innerText = '0';
-        document.getElementById('monthlyProgressBar').style.width = '0%';
+        sentRequests: [],
+
+        messages: {},
+
+        loginAttempts: 0
+
+    };
+
+    users.push(newUser);
+
+    saveUsers(users);
+
+    alert("Account created successfully!");
+
+    document.getElementById("loginUsername").value = username;
+
+    showLogin();
+
+}
+
+
+/* ==========================================
+   LOGIN
+========================================== */
+
+function login() {
+
+    const username =
+        document.getElementById("loginUsername").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+    const error =
+        document.getElementById("loginError");
+
+    error.textContent = "";
+
+    const users = getUsers();
+
+    const user = users.find(
+        u => u.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (!user) {
+        error.textContent = "Account not found.";
         return;
-      }
-
-      const last30Days = [];
-      for (let i = 29; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        last30Days.push(formatDateKey(d));
-      }
-
-      let totalPossible = targetHabits.length * 30;
-      let totalCompleted = 0;
-      let maxStreak = 0;
-
-      targetHabits.forEach(habit => {
-        let habitCompletedCount = 0;
-        last30Days.forEach(dayKey => {
-          if (habit.progress && habit.progress[dayKey]) {
-            habitCompletedCount++;
-            totalCompleted++;
-          }
-        });
-
-        const currentStreak = calculateStreak(habit);
-        if (currentStreak > maxStreak) maxStreak = currentStreak;
-
-        const habitRate = Math.round((habitCompletedCount / 30) * 100);
-
-        const item = document.createElement('div');
-        item.className = 'monthly-habit-item';
-        item.innerHTML = `
-          <div>
-            <strong>${habit.text}</strong>
-            <span style="font-size:11px; color:#94a3b8; margin-left:6px;">(${habitCompletedCount}/30 days completed)</span>
-          </div>
-          <div style="font-weight:700; color:#38bdf8;">${habitRate}%</div>
-        `;
-        monthHabitBox.appendChild(item);
-      });
-
-      const overallPercentage = Math.round((totalCompleted / totalPossible) * 100);
-
-      document.getElementById('monthOverallRate').innerText = `${overallPercentage}%`;
-      document.getElementById('monthBestStreak').innerText = `${maxStreak}d`;
-      document.getElementById('monthTotalHabits').innerText = targetHabits.length;
-      document.getElementById('monthlyProgressBar').style.width = `${overallPercentage}%`;
     }
 
-    function renderLineChart(weekDates, targetHabits) {
-      const canvas = document.getElementById('lineChartCanvas');
-      const ctx = canvas.getContext('2d');
+    user.loginAttempts = user.loginAttempts || 0;
 
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
+    if (user.password !== password) {
 
-      const width = rect.width;
-      const height = rect.height;
+        user.loginAttempts++;
 
-      ctx.clearRect(0, 0, width, height);
+        saveUsers(users);
 
-      const percentages = weekDates.map(dateObj => {
-        const dateKey = formatDateKey(dateObj);
-        if (targetHabits.length === 0) return 0;
-        let done = 0;
-        targetHabits.forEach(h => { if (h.progress && h.progress[dateKey]) done++; });
-        return Math.round((done / targetHabits.length) * 100);
-      });
+        const remaining = 3 - user.loginAttempts;
 
-      const padding = 30;
-      const graphWidth = width - padding * 2;
-      const graphHeight = height - padding * 2;
+        if (remaining <= 0) {
 
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 1;
-      for (let i = 0; i <= 4; i++) {
-        const y = padding + (graphHeight / 4) * i;
-        ctx.beginPath();
-        ctx.moveTo(padding, y);
-        ctx.lineTo(width - padding, y);
-        ctx.stroke();
-      }
+            error.innerHTML =
+                'Too many incorrect attempts. <button class="text-btn" onclick="showForgotPassword()">Forgot Password?</button>';
 
-      const points = percentages.map((val, idx) => {
-        const x = padding + (graphWidth / 6) * idx;
-        const y = padding + graphHeight - (val / 100) * graphHeight;
-        return { x, y, val, label: daysOfWeek[idx] };
-      });
+        } else {
 
-      if (points.length > 0) {
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
+            error.textContent =
+                `Incorrect password. ${remaining} attempt(s) remaining.`;
 
-        for (let i = 0; i < points.length - 1; i++) {
-          const xc = (points[i].x + points[i + 1].x) / 2;
-          const yc = (points[i].y + points[i + 1].y) / 2;
-          ctx.quadraticCurveTo(points[i].x, points[i].y, xc, yc);
         }
-        ctx.lineTo(points[points.length - 1].x, points[points.length - 1].y);
 
-        ctx.strokeStyle = '#38bdf8';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        ctx.lineTo(points[points.length - 1].x, height - padding);
-        ctx.lineTo(points[0].x, height - padding);
-        ctx.closePath();
-
-        const fillGrad = ctx.createLinearGradient(0, padding, 0, height - padding);
-        fillGrad.addColorStop(0, 'rgba(56, 189, 248, 0.3)');
-        fillGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
-        ctx.fillStyle = fillGrad;
-        ctx.fill();
-
-        points.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-          ctx.fillStyle = '#10b981';
-          ctx.fill();
-          ctx.strokeStyle = '#0b0d12';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-
-          ctx.fillStyle = '#38bdf8';
-          ctx.font = 'bold 10px Segoe UI';
-          ctx.textAlign = 'center';
-          ctx.fillText(`${p.val}%`, p.x, p.y - 10);
-
-          ctx.fillStyle = '#94a3b8';
-          ctx.font = '11px Segoe UI';
-          ctx.fillText(p.label, p.x, height - 8);
-        });
-      }
+        return;
     }
-  </script>
+
+    user.loginAttempts = 0;
+
+    saveUsers(users);
+
+    localStorage.setItem(CURRENT_USER_KEY, user.username);
+
+    openApp();
+
+}
+
+
+/* ==========================================
+   FORGOT PASSWORD
+========================================== */
+
+let resetUsername = null;
+
+function verifyDOB() {
+
+    const username =
+        document.getElementById("forgotUsername").value.trim();
+
+    const dob =
+        document.getElementById("forgotDOB").value;
+
+    const error =
+        document.getElementById("forgotError");
+
+    error.textContent = "";
+
+    const users = getUsers();
+
+    const user = users.find(
+        u => u.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (!user) {
+        error.textContent = "Account not found.";
+        return;
+    }
+
+    if (user.dob !== dob) {
+        error.textContent = "Date of birth does not match.";
+        return;
+    }
+
+    resetUsername = user.username;
+
+    document.getElementById("forgotForm").classList.add("hidden");
+    document.getElementById("resetForm").classList.remove("hidden");
+
+}
+
+
+function resetPassword() {
+
+    const password =
+        document.getElementById("newPassword").value;
+
+    const confirm =
+        document.getElementById("confirmNewPassword").value;
+
+    const error =
+        document.getElementById("resetError");
+
+    error.textContent = "";
+
+    if (!password || !confirm) {
+        error.textContent = "Please enter the new password.";
+        return;
+    }
+
+    if (password.length < 4) {
+        error.textContent = "Password must be at least 4 characters.";
+        return;
+    }
+
+    if (password !== confirm) {
+        error.textContent = "Passwords do not match.";
+        return;
+    }
+
+    let users = getUsers();
+
+    const user = users.find(
+        u => u.username.toLowerCase() === resetUsername.toLowerCase()
+    );
+
+    if (!user) {
+        error.textContent = "Account not found.";
+        return;
+    }
+
+    user.password = password;
+    user.loginAttempts = 0;
+
+    saveUsers(users);
+
+    alert("Password reset successfully!");
+
+    resetUsername = null;
+
+    document.getElementById("loginUsername").value = user.username;
+
+    showLogin();
+
+}
+
+
+/* ==========================================
+   OPEN APP
+========================================== */
+
+function openApp() {
+
+    document.getElementById("authPage").classList.add("hidden");
+
+    document.getElementById("app").classList.remove("hidden");
+
+    updateUserInterface();
+
+}
+
+
+/* ==========================================
+   UI UPDATE
+========================================== */
+
+function updateUserInterface() {
+
+    const user = getCurrentUser();
+
+    if (!user) return;
+
+    document.getElementById("topUsername").textContent =
+        user.username;
+
+    document.getElementById("welcomeName").textContent =
+        user.username;
+
+    document.getElementById("profileUsername").textContent =
+        user.username;
+
+    document.getElementById("profileDOB").textContent =
+        "Date of birth: " + user.dob;
+
+    setAvatar("topAvatar", user.character);
+    setAvatar("profileAvatar", user.character);
+
+    renderRoutine();
+    renderCharacters();
+    renderFriends();
+    renderRequests();
+    renderChats();
+    updateStats();
+
+}
+
+
+function setAvatar(id, character) {
+
+    const element = document.getElementById(id);
+
+    if (!element) return;
+
+    if (character && character.image) {
+
+        element.innerHTML =
+            `<img src="${character.image}" alt="${character.name}">`;
+
+    } else {
+
+        element.textContent = "👤";
+
+    }
+
+}
+
+
+/* ==========================================
+   NAVIGATION
+========================================== */
+
+function openSection(sectionId) {
+
+    document.querySelectorAll(".section").forEach(section => {
+        section.classList.remove("active");
+    });
+
+    document.getElementById(sectionId).classList.add("active");
+
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    const buttons = document.querySelectorAll(".nav-btn");
+
+    const map = {
+        home: 0,
+        routine: 1,
+        characters: 2,
+        friends: 3,
+        messages: 4,
+        profile: 5
+    };
+
+    if (map[sectionId] !== undefined) {
+        buttons[map[sectionId]].classList.add("active");
+    }
+
+}
+
+
+/* ==========================================
+   ROUTINE CLASSIFICATION
+========================================== */
+
+function classifyRoutine(text) {
+
+    const value = text.toLowerCase();
+
+    const categories = {
+
+        "Study": [
+            "study",
+            "homework",
+            "school",
+            "math",
+            "science",
+            "learn",
+            "revision",
+            "revise",
+            "exam",
+            "class"
+        ],
+
+        "Reading": [
+            "read",
+            "reading",
+            "book",
+            "novel",
+            "story"
+        ],
+
+        "Exercise": [
+            "exercise",
+            "workout",
+            "gym",
+            "run",
+            "running",
+            "walk",
+            "walking",
+            "jog",
+            "cycling",
+            "sport",
+            "football",
+            "basketball"
+        ],
+
+        "Meditation": [
+            "meditate",
+            "meditation",
+            "mindfulness",
+            "breathing",
+            "prayer",
+            "relax"
+        ],
+
+        "Sleep": [
+            "sleep",
+            "nap",
+            "rest"
+        ],
+
+        "Creative": [
+            "draw",
+            "drawing",
+            "paint",
+            "painting",
+            "music",
+            "sing",
+            "singing",
+            "dance",
+            "coding",
+            "code"
+        ],
+
+        "Personal": [
+            "bath",
+            "shower",
+            "clean",
+            "organize",
+            "room",
+            "self care"
+        ]
+
+    };
+
+    for (const category in categories) {
+
+        if (
+            categories[category].some(
+                word => value.includes(word)
+            )
+        ) {
+            return category;
+        }
+
+    }
+
+    return "Other";
+
+}
+
+
+function addRoutine() {
+
+    const input =
+        document.getElementById("routineInput");
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    const user = getCurrentUser();
+
+    if (!user) return;
+
+    const category = classifyRoutine(text);
+
+    if (!user.routine) {
+        user.routine = [];
+    }
+
+    user.routine.push({
+
+        id: Date.now(),
+
+        text: text,
+
+        category: category,
+
+        completed: false
+
+    });
+
+    updateCurrentUser(user);
+
+    input.value = "";
+
+    document.getElementById("classificationHint").textContent =
+        `Automatically classified as: ${category}`;
+
+    renderRoutine();
+
+    updateStats();
+
+}
+
+
+function renderRoutine() {
+
+    const user = getCurrentUser();
+
+    if (!user) return;
+
+    const list =
+        document.getElementById("routineList");
+
+    const homeList =
+        document.getElementById("homeRoutineList");
+
+    list.innerHTML = "";
+    homeList.innerHTML = "";
+
+    if (!user.routine || user.routine.length === 0) {
+
+        list.innerHTML =
+            "<p>No tasks yet. Add something to your routine.</p>";
+
+        homeList.innerHTML =
+            "<p>No tasks yet.</p>";
+
+        return;
+    }
+
+    user.routine.forEach(task => {
+
+        const item = document.createElement("div");
+
+        item.className = "routine-item";
+
+        item.innerHTML = `
+
+            <input
+                type="checkbox"
+                class="routine-check"
+                ${task.completed ? "checked" : ""}
+                onchange="toggleRoutine(${task.id})"
+            >
+
+            <div class="routine-info">
+
+                <strong style="${task.completed ? "text-decoration:line-through;color:#999;" : ""}">
+                    ${escapeHTML(task.text)}
+                </strong>
+
+                <span class="category">
+                    ${escapeHTML(task.category)}
+                </span>
+
+            </div>
+
+            <button
+                class="delete-btn"
+                onclick="deleteRoutine(${task.id})"
+            >
+                ×
+            </button>
+
+        `;
+
+        list.appendChild(item);
+
+
+        const homeItem = item.cloneNode(true);
+
+        homeItem.querySelector("input").setAttribute(
+            "onchange",
+            `toggleRoutine(${task.id})`
+        );
+
+        homeItem.querySelector(".delete-btn").remove();
+
+        homeList.appendChild(homeItem);
+
+    });
+
+}
+
+
+function toggleRoutine(id) {
+
+    const user = getCurrentUser();
+
+    const task = user.routine.find(
+        item => item.id === id
+    );
+
+    if (!task) return;
+
+    task.completed = !task.completed;
+
+    updateCurrentUser(user);
+
+    renderRoutine();
+
+    updateStats();
+
+}
+
+
+function deleteRoutine(id) {
+
+    const user = getCurrentUser();
+
+    user.routine =
+        user.routine.filter(
+            task => task.id !== id
+        );
+
+    updateCurrentUser(user);
+
+    renderRoutine();
+
+    updateStats();
+
+}
+
+
+function updateStats() {
+
+    const user = getCurrentUser();
+
+    if (!user) return;
+
+    const routine = user.routine || [];
+
+    const total = routine.length;
+
+    const completed =
+        routine.filter(task => task.completed).length;
+
+    const remaining =
+        total - completed;
+
+    const percent =
+        total === 0
+            ? 0
+            : Math.round((completed / total) * 100);
+
+    document.getElementById("totalTasks").textContent = total;
+    document.getElementById("completedTasks").textContent = completed;
+    document.getElementById("remainingTasks").textContent = remaining;
+    document.getElementById("progressPercent").textContent = percent + "%";
+
+}
+
+
+/* ==========================================
+   CHARACTERS
+========================================== */
+
+function renderCharacters() {
+
+    const user = getCurrentUser();
+
+    const grid =
+        document.getElementById("characterGrid");
+
+    grid.innerHTML = "";
+
+    characters.forEach((character, index) => {
+
+        const card =
+            document.createElement("div");
+
+        const selected =
+            user.character &&
+            user.character.name === character.name;
+
+        card.className =
+            "character-card" +
+            (selected ? " selected" : "");
+
+        card.innerHTML = `
+
+            <img
+                src="${character.image}"
+                alt="${escapeHTML(character.name)}"
+            >
+
+            <strong>
+                ${escapeHTML(character.name)}
+            </strong>
+
+        `;
+
+        card.onclick = () => selectCharacter(index);
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function selectCharacter(index) {
+
+    const user = getCurrentUser();
+
+    user.character = characters[index];
+
+    updateCurrentUser(user);
+
+    updateUserInterface();
+
+    alert(
+        `${characters[index].name} selected as your profile character!`
+    );
+
+}
+
+
+/* ==========================================
+   FRIEND SYSTEM
+========================================== */
+
+function sendFriendRequest() {
+
+    const input =
+        document.getElementById("friendUsername");
+
+    const targetUsername =
+        input.value.trim();
+
+    if (!targetUsername) return;
+
+    const currentUser = getCurrentUser();
+
+    const users = getUsers();
+
+    const target = users.find(
+        user =>
+            user.username.toLowerCase() ===
+            targetUsername.toLowerCase()
+    );
+
+    if (!target) {
+        alert("User not found.");
+        return;
+    }
+
+    if (
+        target.username.toLowerCase() ===
+        currentUser.username.toLowerCase()
+    ) {
+        alert("You cannot add yourself.");
+        return;
+    }
+
+    if (
+        currentUser.friends.includes(target.username)
+    ) {
+        alert("You are already friends.");
+        return;
+    }
+
+    target.requests = target.requests || [];
+
+    if (
+        target.requests.some(
+            request =>
+                request.toLowerCase() ===
+                currentUser.username.toLowerCase()
+        )
+    ) {
+        alert("Request already sent.");
+        return;
+    }
+
+    target.requests.push(currentUser.username);
+
+    saveUsers(users);
+
+    input.value = "";
+
+    alert("Friend request sent!");
+
+    renderRequests();
+
+}
+
+
+function renderRequests() {
+
+    const user = getCurrentUser();
+
+    const list =
+        document.getElementById("requestList");
+
+    list.innerHTML = "";
+
+    if (!user.requests || user.requests.length === 0) {
+
+        list.innerHTML =
+            "<p>No pending requests.</p>";
+
+        return;
+    }
+
+    user.requests.forEach(username => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "request-card";
+
+        card.innerHTML = `
+
+            <div class="avatar">👤</div>
+
+            <strong>${escapeHTML(username)}</strong>
+
+            <div class="request-actions">
+
+                <button
+                    class="accept"
+                    onclick="acceptRequest('${escapeAttribute(username)}')"
+                >
+                    Accept
+                </button>
+
+                <button
+                    class="reject"
+                    onclick="rejectRequest('${escapeAttribute(username)}')"
+                >
+                    Reject
+                </button>
+
+            </div>
+
+        `;
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+function acceptRequest(username) {
+
+    const users = getUsers();
+
+    const currentUser = users.find(
+        user =>
+            user.username.toLowerCase() ===
+            getCurrentUser().username.toLowerCase()
+    );
+
+    const sender = users.find(
+        user =>
+            user.username.toLowerCase() ===
+            username.toLowerCase()
+    );
+
+    if (!sender) return;
+
+    currentUser.requests =
+        currentUser.requests.filter(
+            name =>
+                name.toLowerCase() !==
+                username.toLowerCase()
+        );
+
+    currentUser.friends =
+        currentUser.friends || [];
+
+    sender.friends =
+        sender.friends || [];
+
+    if (!currentUser.friends.includes(sender.username)) {
+        currentUser.friends.push(sender.username);
+    }
+
+    if (!sender.friends.includes(currentUser.username)) {
+        sender.friends.push(currentUser.username);
+    }
+
+    saveUsers(users);
+
+    renderFriends();
+    renderRequests();
+    renderChats();
+
+}
+
+
+function rejectRequest(username) {
+
+    const user = getCurrentUser();
+
+    user.requests =
+        user.requests.filter(
+            name =>
+                name.toLowerCase() !==
+                username.toLowerCase()
+        );
+
+    updateCurrentUser(user);
+
+    renderRequests();
+
+}
+
+
+function renderFriends() {
+
+    const user = getCurrentUser();
+
+    const list =
+        document.getElementById("friendList");
+
+    list.innerHTML = "";
+
+    if (!user.friends || user.friends.length === 0) {
+
+        list.innerHTML =
+            "<p>You don't have any friends yet.</p>";
+
+        return;
+    }
+
+    user.friends.forEach(username => {
+
+        const card =
+            document.createElement("div");
+
+        card.className = "friend-card";
+
+        card.innerHTML = `
+
+            <div class="avatar">👤</div>
+
+            <div class="friend-info">
+
+                <strong>${escapeHTML(username)}</strong>
+
+                <small>Friend</small>
+
+            </div>
+
+            <button
+                class="small-btn"
+                onclick="openChat('${escapeAttribute(username)}')"
+            >
+                Chat
+            </button>
+
+        `;
+
+        list.appendChild(card);
+
+    });
+
+}
+
+
+/* ==========================================
+   MESSAGING
+========================================== */
+
+let selectedChat = null;
+
+
+function renderChats() {
+
+    const user = getCurrentUser();
+
+    const list =
+        document.getElementById("chatList");
+
+    list.innerHTML = "";
+
+    if (!user.friends || user.friends.length === 0) {
+
+        list.innerHTML =
+            "<p style='padding:15px;'>Add friends to start chatting.</p>";
+
+        return;
+    }
+
+    user.friends.forEach(username => {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "chat-user" +
+            (selectedChat === username ? " selected" : "");
+
+        item.innerHTML = `
+
+            <div class="avatar">👤</div>
+
+            <strong>${escapeHTML(username)}</strong>
+
+        `;
+
+        item.onclick = () => openChat(username);
+
+        list.appendChild(item);
+
+    });
+
+}
+
+
+function openChat(username) {
+
+    selectedChat = username;
+
+    openSection("messages");
+
+    document.getElementById("chatHeader").textContent =
+        username;
+
+    renderChats();
+
+    renderMessages();
+
+}
+
+
+function getConversationKey(a, b) {
+
+    return [a.toLowerCase(), b.toLowerCase()]
+        .sort()
+        .join("::");
+
+}
+
+
+function renderMessages() {
+
+    const container =
+        document.getElementById("chatMessages");
+
+    container.innerHTML = "";
+
+    const user = getCurrentUser();
+
+    if (!selectedChat) {
+
+        container.innerHTML =
+            "<p>Select a friend to start chatting.</p>";
+
+        return;
+    }
+
+    const users = getUsers();
+
+    const key =
+        getConversationKey(
+            user.username,
+            selectedChat
+        );
+
+    let messages =
+        JSON.parse(
+            localStorage.getItem("dailyflow_messages_" + key) || "[]"
+        );
+
+    messages.forEach(message => {
+
+        const div =
+            document.createElement("div");
+
+        div.className =
+            "message" +
+            (
+                message.sender.toLowerCase() ===
+                user.username.toLowerCase()
+                    ? " mine"
+                    : ""
+            );
+
+        div.textContent = message.text;
+
+        container.appendChild(div);
+
+    });
+
+    container.scrollTop =
+        container.scrollHeight;
+
+}
+
+
+function sendMessage() {
+
+    const input =
+        document.getElementById("messageInput");
+
+    const text =
+        input.value.trim();
+
+    if (!text || !selectedChat) return;
+
+    const user = getCurrentUser();
+
+    const key =
+        getConversationKey(
+            user.username,
+            selectedChat
+        );
+
+    const storageKey =
+        "dailyflow_messages_" + key;
+
+    let messages =
+        JSON.parse(
+            localStorage.getItem(storageKey) || "[]"
+        );
+
+    messages.push({
+
+        sender: user.username,
+
+        receiver: selectedChat,
+
+        text: text,
+
+        time: Date.now()
+
+    });
+
+    localStorage.setItem(
+        storageKey,
+        JSON.stringify(messages)
+    );
+
+    input.value = "";
+
+    renderMessages();
+
+}
+
+
+/* ==========================================
+   ADD ACCOUNT
+========================================== */
+
+function addAccount() {
+
+    localStorage.removeItem(CURRENT_USER_KEY);
+
+    document.getElementById("app").classList.add("hidden");
+
+    document.getElementById("authPage").classList.remove("hidden");
+
+    showLogin();
+
+}
+
+
+/* ==========================================
+   LOGOUT
+========================================== */
+
+function logout() {
+
+    localStorage.removeItem(CURRENT_USER_KEY);
+
+    document.getElementById("app").classList.add("hidden");
+
+    document.getElementById("authPage").classList.remove("hidden");
+
+    document.getElementById("loginPassword").value = "";
+
+    showLogin();
+
+}
+
+
+/* ==========================================
+   SECURITY / HTML HELPERS
+========================================== */
+
+function escapeHTML(value) {
+
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+function escapeAttribute(value) {
+
+    return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
+}
+
+
+/* ==========================================
+   AUTO LOGIN
+========================================== */
+
+window.addEventListener("load", () => {
+
+    const current =
+        localStorage.getItem(CURRENT_USER_KEY);
+
+    if (current && getCurrentUser()) {
+
+        openApp();
+
+    } else {
+
+        showLogin();
+
+    }
+
+});
+
+</script>
+
 </body>
 </html>
